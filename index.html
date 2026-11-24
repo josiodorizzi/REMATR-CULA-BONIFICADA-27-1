@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="pt-BR"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Painel Rematrícula Bonificada 2027/1</title>
+<style>
+:root{--bg:#f4f6fa;--panel:#ffffff;--panel2:#fff9e8;--line:#dce3ee;--text:#24324a;--muted:#71809a;--yellow:#f4bd20;--yellow2:#ffe08a;--green:#159b68;--red:#d94b55;--blue:#477bd1}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:14px/1.45 Inter,Segoe UI,Arial,sans-serif;text-transform:uppercase}
+input,select,button{font:inherit;text-transform:uppercase}
+.rank-meta,.hint,.sub,.note,.polo-sub{letter-spacing:.01em}
+header{padding:20px 24px 14px;border-bottom:1px solid var(--line);background:#ffffff;box-shadow:0 2px 10px rgba(28,45,75,.05);position:sticky;top:0;z-index:5}
+.brand{display:flex;gap:12px;align-items:center}.logo{width:34px;height:34px;border-radius:9px;background:#fff3c4;color:#8a6500;display:grid;place-items:center;font-weight:900;border:1px solid #f0d77e}
+h1{font-size:20px;margin:0;font-weight:800}.sub{color:var(--muted);font-size:12px;margin-top:2px}
+.tabs{display:flex;gap:22px;margin-top:18px;flex-wrap:wrap}.tab{background:none;border:0;color:#52627d;padding:9px 2px;cursor:pointer;font-weight:700;border-bottom:3px solid transparent}.tab.active{color:var(--yellow);border-color:var(--yellow)}
+main{padding:20px 24px 40px;max-width:1600px;margin:auto}.toolbar{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin:0 0 18px}
+.toolbar label{color:var(--muted);font-size:12px}.switch{display:flex;flex-wrap:wrap;background:#f0f3f8;padding:4px;border:1px solid var(--line);border-radius:10px;gap:3px}
+.switch button,.select, .search{background:#ffffff;color:var(--text);border:1px solid #cbd5e3;border-radius:8px;padding:9px 12px}
+.switch button{border:0;cursor:pointer;font-weight:700;white-space:nowrap;font-size:11px;padding:9px 12px}.switch button.active{background:var(--yellow);color:#26334a}
+.select{min-width:115px}.search{min-width:230px;outline:none}.hint{color:var(--muted);font-size:11px}
+.kpis{display:grid;grid-template-columns:repeat(5,minmax(140px,1fr));gap:10px}
+.kpi{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:15px 16px;min-height:112px;box-shadow:0 2px 8px rgba(28,45,75,.035)}
+.kpi .label{color:#647895;text-transform:uppercase;font-size:10px;letter-spacing:.08em;font-weight:800}.kpi .value{font-size:27px;font-weight:850;margin:7px 0 2px}.kpi .note{font-size:11px;color:var(--muted)}
+.kpi.primary .value{color:var(--yellow)}.kpi.good .value{color:var(--green)}.kpi.warn .value{color:var(--red)}
+.section-head{display:flex;justify-content:space-between;align-items:end;margin:24px 0 10px;gap:10px;flex-wrap:wrap}.section-head h2{font-size:16px;margin:0}.section-head p{color:var(--muted);font-size:11px;margin:0}
+.columns{display:grid;grid-template-columns:1fr 1fr;gap:14px}.panel{background:var(--panel);border:1px solid var(--line);border-radius:12px;overflow:hidden;box-shadow:0 2px 8px rgba(28,45,75,.035)}.panel-title{padding:14px 16px;border-bottom:1px solid var(--line);font-weight:800;display:flex;justify-content:space-between}
+.rank-row{display:grid;grid-template-columns:26px minmax(0,1fr) 70px;gap:10px;align-items:center;padding:10px 14px;border-bottom:1px solid #edf0f5}.rank-row:last-child{border:0}.rank-no{color:var(--muted);font-weight:800}.rank-name{font-weight:700;font-size:12px}.rank-meta{font-size:10px;color:var(--muted)}.rank-value{text-align:right;font-weight:850;color:var(--yellow)}
+.bar{height:5px;background:#e6ebf2;border-radius:10px;margin-top:6px;overflow:hidden}.bar span{display:block;height:100%;background:var(--yellow);border-radius:10px}
+.states{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}.operation-state-group{margin-bottom:18px}.operation-state-title{margin:0 0 10px;background:#fff9e8;color:#27364f;border:1px solid #f0d77e;border-radius:10px}.state{background:var(--panel);border:1px solid var(--line);border-radius:11px;overflow:hidden;box-shadow:0 2px 8px rgba(28,45,75,.03)}.state summary{list-style:none;cursor:pointer;padding:13px 14px;display:flex;justify-content:space-between;align-items:center;gap:8px}.state summary::-webkit-details-marker{display:none}.uf-label{display:inline-flex;align-items:center;gap:8px;min-width:70px}.uf-map{width:42px;height:34px;display:block;filter:drop-shadow(0 1px 1px rgba(30,45,70,.16));flex:none}.uf{font-size:16px;font-weight:900;color:var(--text);letter-spacing:.04em}.state-stat{text-align:right;font-size:12px;font-weight:800}.state-stat small{display:block;color:var(--muted);font-size:10px;font-weight:500}.polo{padding:10px 13px;border-top:1px solid #e8edf4;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px}.polo-name{font-size:11px;font-weight:700}.polo-sub{font-size:10px;color:var(--muted)}.polo-pct{font-size:12px;color:var(--yellow);font-weight:800;text-align:right}
+.table-wrap{overflow:auto}.data-table{width:100%;border-collapse:collapse;min-width:750px}.data-table th,.data-table td{padding:10px 12px;border-bottom:1px solid #e8edf4;text-align:right;font-size:11px}.data-table th{color:#667894;text-transform:uppercase;font-size:10px}.data-table td:first-child,.data-table th:first-child{text-align:left}.data-table tr:hover{background:#f8f9fc}
+.empty{padding:24px;text-align:center;color:var(--muted)}footer{padding:22px 0 0;color:#8390a5;font-size:10px}
+@media(max-width:1050px){.kpis{grid-template-columns:repeat(3,1fr)}.states{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:700px){header{padding:14px}.tabs{gap:14px}main{padding:14px}.kpis{grid-template-columns:repeat(2,1fr)}.columns{grid-template-columns:1fr}.states{grid-template-columns:1fr}.kpi .value{font-size:23px}}
+
+.projection-panel{background:#fff;border:1px solid #dce3ee;border-radius:12px;padding:14px 16px;margin:12px 0 16px;box-shadow:0 2px 8px rgba(28,45,75,.035)}
+.projection-title{font-size:13px;font-weight:900;color:#263650;margin-bottom:4px}
+.projection-sub{font-size:10px;color:#71809a;margin-bottom:12px}
+.projection-controls{display:grid;grid-template-columns:repeat(4,minmax(120px,1fr));gap:10px}
+.projection-controls label{display:block;font-size:10px;font-weight:800;color:#71809a;margin-bottom:5px}
+.projection-controls input{width:100%;min-width:0;padding:9px 10px;border:1px solid #cbd5e3;border-radius:8px;background:#fff;color:#24324a;font-size:13px;font-weight:700}
+.projection-results{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin-top:12px}
+.projection-result{background:#f4f6fa;border-radius:8px;padding:10px}
+.projection-result small{display:block;color:#71809a;font-size:9px;font-weight:800;margin-bottom:3px}
+.projection-result strong{font-size:17px;color:#263650}
+.projection-result.highlight{background:#fff5d6}
+.projection-result.highlight strong{color:#a87500}
+@media(max-width:900px){.projection-controls{grid-template-columns:repeat(2,minmax(120px,1fr))}.projection-results{grid-template-columns:repeat(2,minmax(0,1fr))}}@media(max-width:700px){.projection-controls{grid-template-columns:1fr}.projection-results{grid-template-columns:1fr 1fr}}
+
+.projection-calendar-wrap{margin-top:12px;border:1px solid #e1e7f0;border-radius:9px;overflow:hidden}
+.projection-calendar-head{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:11px 12px;background:#fff9e8;color:#263650;font-size:11px;font-weight:900}
+.projection-calendar-scroll{max-height:340px;overflow:auto}
+.projection-calendar{width:100%;border-collapse:collapse;min-width:430px}
+.projection-calendar th,.projection-calendar td{padding:8px 11px;border-bottom:1px solid #edf0f5;text-align:right;font-size:11px}
+.projection-calendar th{position:sticky;top:0;background:#f4f6fa;color:#71809a;font-size:9px;letter-spacing:.03em}
+.projection-calendar th:first-child,.projection-calendar td:first-child{text-align:left}
+.projection-calendar td.required{font-weight:900;color:#a87500}
+.projection-calendar tr:last-child td{border-bottom:0}
+.projection-calendar-empty{padding:14px;color:#71809a;font-size:11px}
+.projection-calendar-summary{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;padding:10px 12px;background:#f8f9fc;color:#71809a;font-size:10px}
+
+.projection-calendar-actions{display:flex;justify-content:flex-end;padding:8px 12px;background:#fff;border-top:1px solid #edf0f5}
+.projection-refresh{border:0;border-radius:7px;background:#ffc629;color:#263650;font-weight:900;font-size:10px;padding:8px 13px;cursor:pointer}
+.projection-calendar tr.today-row td{background:#fff9e8}
+.projection-calendar tr.past-row td{color:#9aa6b8;background:#fafbfc}
+.projection-status{font-size:10px;font-weight:800;color:#71809a;padding:7px 12px}
+
+/* AUMENTO GERAL DE TIPOGRAFIA — MELHOR LEITURA */
+body{font-size:16px;line-height:1.5}
+.logo{font-size:14px}
+h1{font-size:23px}
+.sub{font-size:14px}
+.tab{font-size:15px}
+.toolbar label{font-size:14px}
+.switch button{font-size:13px}
+.select,.search{font-size:14px}
+.hint{font-size:13px}
+.kpi .label{font-size:12px}
+.kpi .value{font-size:30px}
+.kpi .note{font-size:13px}
+.section-head h2{font-size:18px}
+.section-head p{font-size:13px}
+.panel-title{font-size:16px}
+.rank-no{font-size:14px}
+.rank-name{font-size:14px}
+.rank-meta{font-size:12px}
+.rank-value{font-size:15px}
+.uf{font-size:18px}
+.state-stat{font-size:14px}
+.state-stat small{font-size:12px}
+.polo-name{font-size:13px}
+.polo-sub{font-size:12px}
+.polo-pct{font-size:14px}
+.data-table th,.data-table td{font-size:13px}
+.data-table th{font-size:12px}
+.empty{font-size:14px}
+footer{font-size:12px}
+.projection-title{font-size:15px}
+.projection-sub{font-size:12px}
+.projection-controls label{font-size:12px}
+.projection-controls input{font-size:15px}
+.projection-result small{font-size:11px}
+.projection-result strong{font-size:19px}
+.projection-calendar-head{font-size:13px}
+.projection-calendar th{font-size:11px}
+.projection-calendar td{font-size:13px}
+.projection-calendar-empty{font-size:13px}
+.projection-calendar-summary{font-size:12px}
+.projection-status{font-size:12px}
+.projection-refresh{font-size:12px}
+@media(max-width:700px){
+ h1{font-size:20px}
+ .kpi .value{font-size:25px}
+ .tab{font-size:14px}
+ .projection-result strong{font-size:17px}
+}
+
+.projection-calendar{min-width:900px}
+.projection-calendar th,.projection-calendar td{padding:10px 12px;font-size:12px}
+.projection-calendar th{font-size:10px}
+.projection-calendar td.required{font-size:13px}
+.projection-progress{display:flex;align-items:center;gap:7px;min-width:105px}
+.projection-progress-track{height:7px;flex:1;min-width:38px;background:#e7ebf2;border-radius:8px;overflow:hidden}
+.projection-progress-fill{height:100%;background:#159b68;border-radius:8px}
+.projection-pct{font-weight:900;color:#159b68;white-space:nowrap}
+.projection-gap{font-weight:900;color:#d94b55;white-space:nowrap}
+.projection-calendar tr.completed-day td{background:#f0faf5}
+.projection-calendar-summary strong{color:#263650}
+
+.projection-total{font-weight:900;color:#263650;font-size:13px;white-space:nowrap}
+.projection-calendar th:nth-child(4){min-width:180px}
+.projection-calendar th:nth-child(5){min-width:160px}
+.projection-calendar th:nth-child(6){min-width:100px}
+
+.action-plan{margin:14px 0 18px;background:#fff;border:1px solid #dce3ee;border-radius:12px;padding:16px;box-shadow:0 2px 8px rgba(28,45,75,.035)}
+.action-plan-head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap;margin-bottom:12px}
+.action-plan-title{font-size:16px;font-weight:900;color:#263650}
+.action-plan-sub{font-size:12px;color:#71809a;margin-top:4px}
+.action-focus{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px;margin-bottom:14px}
+.action-focus-card{background:#f4f6fa;border-radius:8px;padding:10px}
+.action-focus-card small{display:block;color:#71809a;font-size:10px;font-weight:800;margin-bottom:4px}
+.action-focus-card strong{font-size:19px;color:#263650}
+.action-steps{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.action-step{border:1px solid #e3e8f0;border-radius:9px;padding:12px;background:#fff}
+.action-step-top{display:flex;align-items:center;gap:8px;margin-bottom:7px}
+.action-step-no{display:grid;place-items:center;width:25px;height:25px;border-radius:50%;background:#fff2c9;color:#9a6b00;font-size:12px;font-weight:900;flex:none}
+.action-step h4{font-size:13px;color:#263650;margin:0}
+.action-step p{font-size:12px;color:#5e6d84;line-height:1.45;margin:6px 0}
+.action-meta{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:8px}
+.action-meta label{font-size:10px;font-weight:800;color:#71809a;display:block}
+.action-meta input,.action-meta select{width:100%;margin-top:4px;padding:7px 8px;border:1px solid #d4dce8;border-radius:7px;background:#fff;color:#263650;font-size:12px}
+.whatsapp-models{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:14px}
+.whatsapp-card{border:1px solid #dce3ee;border-radius:9px;padding:12px;background:#fbfcfe}
+.whatsapp-card h4{margin:0 0 7px;font-size:13px;color:#263650}
+.whatsapp-card p{margin:0 0 8px;font-size:11px;color:#71809a}
+.whatsapp-card textarea{width:100%;min-height:145px;resize:vertical;padding:10px;border:1px solid #d4dce8;border-radius:8px;font:12px/1.5 Arial,sans-serif;color:#263650;background:#fff}
+.whatsapp-actions{display:flex;justify-content:flex-end;margin-top:7px}
+.whatsapp-copy{border:0;border-radius:7px;background:#ffc629;color:#263650;font-size:11px;font-weight:900;padding:8px 12px;cursor:pointer}
+@media(max-width:760px){.action-focus{grid-template-columns:1fr}.action-steps,.whatsapp-models{grid-template-columns:1fr}}
+
+.diagnosis-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin:12px 0 18px}
+.diagnosis-card{background:#fff;border:1px solid var(--line);border-radius:10px;padding:14px}
+.diagnosis-card small{display:block;color:var(--muted);font-size:11px;font-weight:800;margin-bottom:6px}
+.diagnosis-card strong{display:block;font-size:25px;line-height:1.2;color:var(--ink)}
+.diagnosis-card .diagnosis-note{font-size:11px;color:var(--muted);margin-top:5px}
+.diagnosis-card.good strong{color:#159b68}.diagnosis-card.warn strong{color:#b77a00}.diagnosis-card.alert strong{color:#d94b55}
+.diagnosis-section{margin:18px 0}
+.diagnosis-section h3{font-size:16px;color:var(--ink);margin:0 0 5px}
+.diagnosis-section>p{font-size:12px;color:var(--muted);margin:0 0 10px}
+.diagnosis-columns{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.diagnosis-panel{background:#fff;border:1px solid var(--line);border-radius:10px;padding:14px;min-width:0}
+.diagnosis-panel h4{font-size:14px;color:var(--ink);margin:0 0 10px}
+.diagnosis-table{width:100%;border-collapse:collapse;table-layout:fixed}
+/* TABELA DE POLOS: COLUNAS COMPACTAS, SEM FAIXA VAZIA ENTRE OS DADOS */
+.diagnosis-polos .diagnosis-table th:nth-child(1),.diagnosis-polos .diagnosis-table td:nth-child(1){width:56%}
+.diagnosis-polos .diagnosis-table th:nth-child(2),.diagnosis-polos .diagnosis-table td:nth-child(2){width:17%}
+.diagnosis-polos .diagnosis-table th:nth-child(3),.diagnosis-polos .diagnosis-table td:nth-child(3){width:13%}
+.diagnosis-polos .diagnosis-table th:nth-child(4),.diagnosis-polos .diagnosis-table td:nth-child(4){width:14%}
+.diagnosis-table th,.diagnosis-table td{padding:9px 7px;border-bottom:1px solid #edf0f5;text-align:left;font-size:12px}
+.diagnosis-table td:nth-child(1){overflow-wrap:anywhere}
+.diagnosis-table th:nth-child(n+2),.diagnosis-table td:nth-child(n+2){white-space:nowrap}
+.diagnosis-table th{font-size:10px;color:var(--muted);text-transform:uppercase}
+.diagnosis-table td.num,.diagnosis-table th.num{text-align:right;font-variant-numeric:tabular-nums}
+.diagnosis-pill{display:inline-block;border-radius:20px;background:#fff3cf;color:#946700;padding:4px 7px;font-size:10px;font-weight:900}
+.diagnosis-callout{border-left:4px solid var(--yellow);background:#fff9e8;border-radius:7px;padding:13px 14px;color:#34435c;font-size:13px;line-height:1.5;margin:12px 0}
+.scenario-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:9px}
+.scenario{background:#f4f6fa;border-radius:9px;padding:12px}
+.scenario small{display:block;color:var(--muted);font-size:10px;font-weight:800}
+.scenario strong{display:block;font-size:20px;color:var(--ink);margin:4px 0}
+.scenario span{font-size:11px;color:var(--muted)}
+.diagnosis-actions{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.diagnosis-action{border:1px solid var(--line);border-radius:9px;padding:13px;background:#fff}
+.diagnosis-action h4{font-size:13px;margin:0 0 7px;color:var(--ink)}
+.diagnosis-action p{font-size:12px;line-height:1.5;color:#5e6d84;margin:0}
+.diagnosis-footnote{font-size:11px;color:var(--muted);line-height:1.45;margin-top:12px}
+@media(max-width:850px){.diagnosis-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.diagnosis-columns{grid-template-columns:1fr}.diagnosis-actions{grid-template-columns:1fr}}
+@media(max-width:560px){.scenario-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.diagnosis-card strong{font-size:21px}}
+.diagnosis-nav-cue{margin:10px 0;padding:10px 13px;border-left:4px solid #f4bd20;background:#fff9e8;color:#34435c;border-radius:7px;font-size:12px;font-weight:700}
+
+/* Tabela de polos: colunas agrupadas, sem faixa vazia */
+.diagnosis-poles-table{width:100%;table-layout:fixed;border-collapse:collapse}
+.diagnosis-poles-table th,.diagnosis-poles-table td{padding:9px 8px;white-space:normal}
+.diagnosis-poles-table th:first-child,.diagnosis-poles-table td:first-child{text-align:left}
+.diagnosis-poles-table th:nth-child(2),.diagnosis-poles-table td:nth-child(2){text-align:left}
+.diagnosis-poles-table th:nth-child(3),.diagnosis-poles-table td:nth-child(3),.diagnosis-poles-table th:nth-child(4),.diagnosis-poles-table td:nth-child(4){text-align:right}
+@media(max-width:700px){.diagnosis-poles-table th,.diagnosis-poles-table td{padding:8px 5px;font-size:10px}}
+</style></head><body>
+<header><div class="brand"><div class="logo">UNI</div><div><h1>Painel de Rematrícula Bonificada • 2027/1</h1><div class="sub">Acompanhamento das respostas por operação, estado e polo</div></div></div>
+<nav class="tabs"><button class="tab active" data-view="geral">Visão geral</button><button class="tab" data-view="diagnostico">DIAGNÓSTICO E OPORTUNIDADES</button><button class="tab" data-view="dados">Consulta de polos</button></nav></header>
+<main>
+<div class="toolbar"><label>CONSULTA POR OPERAÇÃO</label><div class="switch" id="ops"><button class="active" data-op="TODAS">OPERAÇÕES PRÓPRIAS</button><button data-op="OP I">Operação I</button><button data-op="OP II">Operação II</button></div>
+<label for="poloFilter">POLO</label><select id="poloFilter" class="select"><option value="TODOS">TODOS OS POLOS</option></select>
+<input id="search" class="search" list="poloOptions" autocomplete="off" placeholder="Buscar polo ou código..."><datalist id="poloOptions"></datalist><span class="hint">Ranking calculado pela porcentagem de respostas SIM</span></div>
+<section id="view-geral"><div class="diagnosis-nav-cue">NOVA ÁREA DISPONÍVEL: CLIQUE EM <strong>DIAGNÓSTICO E OPORTUNIDADES</strong> PARA VER OS PRINCIPAIS GAPS, ESTADOS E POLOS PRIORITÁRIOS.</div>
+<div class="kpis" id="kpis"></div>
+<div class="section-head"><h2>🏆 Melhores e piores desempenhos</h2><p>Top 10 e 10 polos com menor % de SIM</p></div>
+<div class="columns" id="ranksGeneral"></div>
+<div class="section-head"><h2>ESTADOS E POLOS</h2><p>INFORMAÇÕES SEPARADAS POR OPERAÇÃO — USE OS BOTÕES ACIMA PARA ALTERNAR</p></div>
+<div id="states"></div>
+</section>
+<section id="view-diagnostico" hidden><div id="diagnosisContent"></div></section>
+<section id="view-dados" hidden><div class="section-head"><h2>Consulta detalhada de polos</h2><p>Base, SIM, NÃO, decidir depois e não respondidos</p></div><div class="panel table-wrap"><table class="data-table"><thead><tr><th>Polo</th><th>Estado</th><th>Operação</th><th>Base</th><th>SIM</th><th>% SIM</th><th>NÃO</th><th>Decidir depois</th><th>Não respondido</th></tr></thead><tbody id="tbody"></tbody></table></div></section>
+<footer>Fonte: arquivo “DASH REMATRICULA BONIFICADA 27 - 1.xlsx”. Indicadores calculados a partir dos dados das abas OP I e OP II. Os percentuais representam SIM ÷ base total.</footer>
+</main>
+<script>
+const DATA = [{"nome": "Alta Floresta/MT", "codigo": "19752", "operacao": "OP I", "estado": "MT", "decidir": 114, "nao": 8, "nao_resp": 278, "sim": 397, "base": 797, "pct_sim": 0.4981179422835634}, {"nome": "Apucarana/PR", "codigo": "100250308", "operacao": "OP I", "estado": "PR", "decidir": 35, "nao": 2, "nao_resp": 74, "sim": 101, "base": 212, "pct_sim": 0.47641509433962265}, {"nome": "Balneário Camboriú/SC - Avenida Brasil (Sibara)", "codigo": "100254521", "operacao": "OP I", "estado": "SC", "decidir": 136, "nao": 7, "nao_resp": 310, "sim": 351, "base": 804, "pct_sim": 0.43656716417910446}, {"nome": "Brasília/DF - Taguatinga", "codigo": "100250078", "operacao": "OP I", "estado": "DF", "decidir": 48, "nao": 5, "nao_resp": 137, "sim": 156, "base": 346, "pct_sim": 0.4508670520231214}, {"nome": "Caçador/SC", "codigo": "100250180", "operacao": "OP I", "estado": "SC", "decidir": 61, "nao": 1, "nao_resp": 128, "sim": 164, "base": 354, "pct_sim": 0.4632768361581921}, {"nome": "Cáceres/MT", "codigo": "100251233", "operacao": "OP I", "estado": "MT", "decidir": 51, "nao": 7, "nao_resp": 124, "sim": 114, "base": 296, "pct_sim": 0.38513513513513514}, {"nome": "Caldas Novas/GO", "codigo": "100250558", "operacao": "OP I", "estado": "GO", "decidir": 27, "nao": 2, "nao_resp": 104, "sim": 122, "base": 255, "pct_sim": 0.47843137254901963}, {"nome": "Camboriú/SC", "codigo": "100250275", "operacao": "OP I", "estado": "SC", "decidir": 138, "nao": 12, "nao_resp": 419, "sim": 463, "base": 1032, "pct_sim": 0.4486434108527132}, {"nome": "Campo Grande/MS - Terminal Morenão", "codigo": "100250527", "operacao": "OP I", "estado": "MS", "decidir": 68, "nao": 1, "nao_resp": 129, "sim": 172, "base": 370, "pct_sim": 0.4648648648648649}, {"nome": "Campo Verde/MT", "codigo": "100250956", "operacao": "OP I", "estado": "MT", "decidir": 136, "nao": 2, "nao_resp": 216, "sim": 340, "base": 694, "pct_sim": 0.4899135446685879}, {"nome": "Campos Novos/SC", "codigo": "100250219", "operacao": "OP I", "estado": "SC", "decidir": 51, "nao": 2, "nao_resp": 149, "sim": 167, "base": 369, "pct_sim": 0.45257452574525747}, {"nome": "Chapecó/SC - Bela Vista", "codigo": "100256002", "operacao": "OP I", "estado": "SC", "decidir": 65, "nao": 2, "nao_resp": 168, "sim": 177, "base": 412, "pct_sim": 0.42961165048543687}, {"nome": "Chapecó/SC - Centro", "codigo": "100250200", "operacao": "OP I", "estado": "SC", "decidir": 91, "nao": 6, "nao_resp": 312, "sim": 290, "base": 699, "pct_sim": 0.41487839771101576}, {"nome": "Colíder/MT", "codigo": "10100", "operacao": "OP I", "estado": "MT", "decidir": 61, "nao": 2, "nao_resp": 162, "sim": 213, "base": 438, "pct_sim": 0.4863013698630137}, {"nome": "Corumbá/MS", "codigo": "100251204", "operacao": "OP I", "estado": "MS", "decidir": 124, "nao": 8, "nao_resp": 255, "sim": 275, "base": 662, "pct_sim": 0.41540785498489424}, {"nome": "Cristalina/GO", "codigo": "100250014", "operacao": "OP I", "estado": "GO", "decidir": 70, "nao": 6, "nao_resp": 156, "sim": 152, "base": 384, "pct_sim": 0.3958333333333333}, {"nome": "Curitiba/PR - Boqueirão", "codigo": "100250598", "operacao": "OP I", "estado": "PR", "decidir": 90, "nao": 8, "nao_resp": 254, "sim": 268, "base": 620, "pct_sim": 0.432258064516129}, {"nome": "Curitiba/PR - Centro", "codigo": "100250427", "operacao": "OP I", "estado": "PR", "decidir": 104, "nao": 9, "nao_resp": 307, "sim": 291, "base": 711, "pct_sim": 0.4092827004219409}, {"nome": "Curitiba/PR - Portão", "codigo": "19682", "operacao": "OP I", "estado": "PR", "decidir": 84, "nao": 5, "nao_resp": 290, "sim": 248, "base": 627, "pct_sim": 0.39553429027113235}, {"nome": "Curitibanos/SC", "codigo": "100250562", "operacao": "OP I", "estado": "SC", "decidir": 111, "nao": 3, "nao_resp": 216, "sim": 305, "base": 635, "pct_sim": 0.48031496062992124}, {"nome": "Dourados/MS", "codigo": "100251053", "operacao": "OP I", "estado": "MS", "decidir": 123, "nao": 3, "nao_resp": 255, "sim": 280, "base": 661, "pct_sim": 0.4236006051437216}, {"nome": "Formosa/GO", "codigo": "100250590", "operacao": "OP I", "estado": "GO", "decidir": 136, "nao": 7, "nao_resp": 232, "sim": 313, "base": 688, "pct_sim": 0.45494186046511625}, {"nome": "Fraiburgo/SC", "codigo": "100250217", "operacao": "OP I", "estado": "SC", "decidir": 75, "nao": 3, "nao_resp": 163, "sim": 226, "base": 467, "pct_sim": 0.48394004282655245}, {"nome": "Gaspar/SC", "codigo": "100250173", "operacao": "OP I", "estado": "SC", "decidir": 133, "nao": 17, "nao_resp": 271, "sim": 332, "base": 753, "pct_sim": 0.4409030544488712}, {"nome": "Goianésia/GO", "codigo": "100259023", "operacao": "OP I", "estado": "GO", "decidir": 37, "nao": 1, "nao_resp": 77, "sim": 93, "base": 208, "pct_sim": 0.44711538461538464}, {"nome": "Goiânia/GO - Centro", "codigo": "100255024", "operacao": "OP I", "estado": "GO", "decidir": 94, "nao": 9, "nao_resp": 233, "sim": 243, "base": 579, "pct_sim": 0.41968911917098445}, {"nome": "Itajaí/SC - São Vicente", "codigo": "100250175", "operacao": "OP I", "estado": "SC", "decidir": 403, "nao": 22, "nao_resp": 1095, "sim": 1156, "base": 2676, "pct_sim": 0.4319880418535127}, {"nome": "Jaraguá do Sul/SC", "codigo": "100250284", "operacao": "OP I", "estado": "SC", "decidir": 212, "nao": 17, "nao_resp": 503, "sim": 691, "base": 1423, "pct_sim": 0.48559381588193956}, {"nome": "Lages/SC - Centro", "codigo": "100250026", "operacao": "OP I", "estado": "SC", "decidir": 121, "nao": 8, "nao_resp": 231, "sim": 250, "base": 610, "pct_sim": 0.4098360655737705}, {"nome": "Lages/SC - Garden Shopping", "codigo": "10360", "operacao": "OP I", "estado": "SC", "decidir": 164, "nao": 4, "nao_resp": 339, "sim": 414, "base": 921, "pct_sim": 0.4495114006514658}, {"nome": "Lucas do Rio Verde/MT", "codigo": "100250677", "operacao": "OP I", "estado": "MT", "decidir": 89, "nao": 3, "nao_resp": 236, "sim": 269, "base": 597, "pct_sim": 0.45058626465661644}, {"nome": "Luziânia/GO", "codigo": "100250591", "operacao": "OP I", "estado": "GO", "decidir": 38, "nao": 2, "nao_resp": 101, "sim": 123, "base": 264, "pct_sim": 0.4659090909090909}, {"nome": "Maringá/PR - Terminal Urbano", "codigo": "7506737", "operacao": "OP I", "estado": "PR", "decidir": 32, "nao": 2, "nao_resp": 82, "sim": 71, "base": 187, "pct_sim": 0.37967914438502676}, {"nome": "Mirassol D'Oeste/MT", "codigo": "100250181", "operacao": "OP I", "estado": "MT", "decidir": 34, "nao": 3, "nao_resp": 77, "sim": 109, "base": 223, "pct_sim": 0.48878923766816146}, {"nome": "Navegantes/SC", "codigo": "100250179", "operacao": "OP I", "estado": "SC", "decidir": 149, "nao": 14, "nao_resp": 447, "sim": 486, "base": 1096, "pct_sim": 0.44343065693430656}, {"nome": "Naviraí/MS", "codigo": "100250529", "operacao": "OP I", "estado": "MS", "decidir": 73, "nao": 3, "nao_resp": 159, "sim": 197, "base": 432, "pct_sim": 0.45601851851851855}, {"nome": "Novo Gama/GO- Pedregal", "codigo": "100251055", "operacao": "OP I", "estado": "GO", "decidir": 36, "nao": 2, "nao_resp": 74, "sim": 79, "base": 191, "pct_sim": 0.41361256544502617}, {"nome": "Palmas/TO - Plano Diretor Sul", "codigo": "100256729", "operacao": "OP I", "estado": "TO", "decidir": 91, "nao": 6, "nao_resp": 279, "sim": 226, "base": 602, "pct_sim": 0.3754152823920266}, {"nome": "Planaltina/GO", "codigo": "100250081", "operacao": "OP I", "estado": "GO", "decidir": 71, "nao": 2, "nao_resp": 199, "sim": 261, "base": 533, "pct_sim": 0.4896810506566604}, {"nome": "Pomerode/SC", "codigo": "100250560", "operacao": "OP I", "estado": "SC", "decidir": 114, "nao": 9, "nao_resp": 216, "sim": 362, "base": 701, "pct_sim": 0.5164051355206848}, {"nome": "Ponta Grossa/PR - Centro", "codigo": "100250509", "operacao": "OP I", "estado": "PR", "decidir": 63, "nao": 4, "nao_resp": 173, "sim": 146, "base": 386, "pct_sim": 0.37823834196891193}, {"nome": "Pontes e Lacerda/MT", "codigo": "100250032", "operacao": "OP I", "estado": "MT", "decidir": 119, "nao": 7, "nao_resp": 279, "sim": 288, "base": 693, "pct_sim": 0.4155844155844156}, {"nome": "Porangatu/GO", "codigo": "19250", "operacao": "OP I", "estado": "GO", "decidir": 47, "nao": 4, "nao_resp": 128, "sim": 113, "base": 292, "pct_sim": 0.386986301369863}, {"nome": "Primavera do Leste/MT", "codigo": "100250957", "operacao": "OP I", "estado": "MT", "decidir": 107, "nao": 5, "nao_resp": 230, "sim": 246, "base": 588, "pct_sim": 0.41836734693877553}, {"nome": "Sarandi/PR", "codigo": "100250112", "operacao": "OP I", "estado": "PR", "decidir": 42, "nao": 2, "nao_resp": 100, "sim": 113, "base": 257, "pct_sim": 0.4396887159533074}, {"nome": "Sinop/MT", "codigo": "100250126", "operacao": "OP I", "estado": "MT", "decidir": 88, "nao": 12, "nao_resp": 325, "sim": 323, "base": 748, "pct_sim": 0.4318181818181818}, {"nome": "Tangará da Serra/MT", "codigo": "100251092", "operacao": "OP I", "estado": "MT", "decidir": 72, "nao": 4, "nao_resp": 174, "sim": 198, "base": 448, "pct_sim": 0.4419642857142857}, {"nome": "Timbó/SC", "codigo": "100250561", "operacao": "OP I", "estado": "SC", "decidir": 213, "nao": 9, "nao_resp": 456, "sim": 745, "base": 1423, "pct_sim": 0.5235418130709768}, {"nome": "Três Lagoas/MS", "codigo": "100250909", "operacao": "OP I", "estado": "MS", "decidir": 67, "nao": 5, "nao_resp": 236, "sim": 208, "base": 516, "pct_sim": 0.40310077519379844}, {"nome": "Valparaíso de Goiás/GO - BR 040", "codigo": "100251063", "operacao": "OP I", "estado": "GO", "decidir": 41, "nao": 5, "nao_resp": 132, "sim": 144, "base": 322, "pct_sim": 0.4472049689440994}, {"nome": "Várzea Grande/MT", "codigo": "100250235", "operacao": "OP I", "estado": "MT", "decidir": 213, "nao": 18, "nao_resp": 558, "sim": 448, "base": 1237, "pct_sim": 0.36216653193209375}, {"nome": "Videira/SC", "codigo": "100250218", "operacao": "OP I", "estado": "SC", "decidir": 98, "nao": 4, "nao_resp": 242, "sim": 313, "base": 657, "pct_sim": 0.4764079147640791}, {"nome": "Xanxerê/SC", "codigo": "100250130", "operacao": "OP I", "estado": "SC", "decidir": 71, "nao": 2, "nao_resp": 139, "sim": 178, "base": 390, "pct_sim": 0.4564102564102564}, {"nome": "Xaxim/SC", "codigo": "10014", "operacao": "OP I", "estado": "SC", "decidir": 35, "nao": 3, "nao_resp": 75, "sim": 97, "base": 210, "pct_sim": 0.46190476190476193}, {"nome": "Apodi/RN", "codigo": "100256057", "operacao": "OP II", "estado": "RN", "decidir": 112, "nao": 3, "nao_resp": 223, "sim": 384, "base": 722, "pct_sim": 0.5318559556786704}, {"nome": "Aracati/CE", "codigo": "100250655", "operacao": "OP II", "estado": "CE", "decidir": 119, "nao": 7, "nao_resp": 186, "sim": 254, "base": 566, "pct_sim": 0.44876325088339225}, {"nome": "Araçatuba/SP", "codigo": "100250705", "operacao": "OP II", "estado": "SP", "decidir": 13, "nao": 3, "nao_resp": 40, "sim": 49, "base": 105, "pct_sim": 0.4666666666666667}, {"nome": "Araraquara/SP - Centro", "codigo": "100250834", "operacao": "OP II", "estado": "SP", "decidir": 41, "nao": 2, "nao_resp": 70, "sim": 68, "base": 181, "pct_sim": 0.3756906077348066}, {"nome": "Assú/RN", "codigo": "100256060", "operacao": "OP II", "estado": "RN", "decidir": 85, "nao": 2, "nao_resp": 145, "sim": 222, "base": 454, "pct_sim": 0.4889867841409692}, {"nome": "Barretos/SP", "codigo": "100250759", "operacao": "OP II", "estado": "SP", "decidir": 14, "nao": 2, "nao_resp": 43, "sim": 41, "base": 100, "pct_sim": 0.41}, {"nome": "Baturité/CE", "codigo": "100250481", "operacao": "OP II", "estado": "CE", "decidir": 114, "nao": 4, "nao_resp": 214, "sim": 285, "base": 617, "pct_sim": 0.4619124797406807}, {"nome": "Belo Horizonte/MG - Shopping Estação BH", "codigo": "100250567", "operacao": "OP II", "estado": "MG", "decidir": 140, "nao": 7, "nao_resp": 347, "sim": 432, "base": 926, "pct_sim": 0.46652267818574517}, {"nome": "Boa Viagem/CE", "codigo": "100250874", "operacao": "OP II", "estado": "CE", "decidir": 206, "nao": 4, "nao_resp": 332, "sim": 380, "base": 922, "pct_sim": 0.4121475054229935}, {"nome": "Bonito/PE", "codigo": "100250488", "operacao": "OP II", "estado": "PE", "decidir": 79, "nao": 4, "nao_resp": 129, "sim": 197, "base": 409, "pct_sim": 0.48166259168704156}, {"nome": "Brejo Santo/CE", "codigo": "100254112", "operacao": "OP II", "estado": "CE", "decidir": 73, "nao": 4, "nao_resp": 146, "sim": 242, "base": 465, "pct_sim": 0.5204301075268817}, {"nome": "Canindé/CE", "codigo": "100251037", "operacao": "OP II", "estado": "CE", "decidir": 119, "nao": 4, "nao_resp": 240, "sim": 348, "base": 711, "pct_sim": 0.48945147679324896}, {"nome": "Cariacica/ES - Shopping Moxuara", "codigo": "100250110", "operacao": "OP II", "estado": "ES", "decidir": 109, "nao": 3, "nao_resp": 180, "sim": 303, "base": 595, "pct_sim": 0.5092436974789916}, {"nome": "Domingos Martins/ES", "codigo": "100250205", "operacao": "OP II", "estado": "ES", "decidir": 35, "nao": 2, "nao_resp": 47, "sim": 115, "base": 199, "pct_sim": 0.5778894472361809}, {"nome": "Guarujá/SP", "codigo": "100250058", "operacao": "OP II", "estado": "SP", "decidir": 201, "nao": 9, "nao_resp": 382, "sim": 537, "base": 1129, "pct_sim": 0.47564216120460584}, {"nome": "Ibirité/MG", "codigo": "100250018", "operacao": "OP II", "estado": "MG", "decidir": 45, "nao": 2, "nao_resp": 89, "sim": 89, "base": 225, "pct_sim": 0.39555555555555555}, {"nome": "Ipu/CE", "codigo": "100250658", "operacao": "OP II", "estado": "CE", "decidir": 94, "nao": 2, "nao_resp": 190, "sim": 180, "base": 466, "pct_sim": 0.38626609442060084}, {"nome": "Itapajé/CE", "codigo": "100250656", "operacao": "OP II", "estado": "CE", "decidir": 185, "nao": 9, "nao_resp": 393, "sim": 654, "base": 1241, "pct_sim": 0.5269943593875906}, {"nome": "Jaguaribe/CE", "codigo": "100254152", "operacao": "OP II", "estado": "CE", "decidir": 54, "nao": 3, "nao_resp": 138, "sim": 179, "base": 374, "pct_sim": 0.4786096256684492}, {"nome": "Jaú/SP", "codigo": "100250813", "operacao": "OP II", "estado": "SP", "decidir": 72, "nao": 2, "nao_resp": 194, "sim": 184, "base": 452, "pct_sim": 0.40707964601769914}, {"nome": "João Monlevade/MG", "codigo": "100251089", "operacao": "OP II", "estado": "MG", "decidir": 100, "nao": 3, "nao_resp": 173, "sim": 195, "base": 471, "pct_sim": 0.4140127388535032}, {"nome": "Limoeiro do Norte/CE", "codigo": "100251038", "operacao": "OP II", "estado": "CE", "decidir": 182, "nao": 9, "nao_resp": 301, "sim": 402, "base": 894, "pct_sim": 0.44966442953020136}, {"nome": "Marília/SP", "codigo": "100250742", "operacao": "OP II", "estado": "SP", "decidir": 21, "nao": 2, "nao_resp": 59, "sim": 45, "base": 127, "pct_sim": 0.3543307086614173}, {"nome": "Mombaça/CE", "codigo": "100250875", "operacao": "OP II", "estado": "CE", "decidir": 110, "nao": 2, "nao_resp": 170, "sim": 236, "base": 518, "pct_sim": 0.4555984555984556}, {"nome": "Morada Nova/CE", "codigo": "100251042", "operacao": "OP II", "estado": "CE", "decidir": 83, "nao": 2, "nao_resp": 121, "sim": 152, "base": 358, "pct_sim": 0.4245810055865922}, {"nome": "Mossoró/RN", "codigo": "100251006", "operacao": "OP II", "estado": "RN", "decidir": 39, "nao": 5, "nao_resp": 111, "sim": 140, "base": 295, "pct_sim": 0.4745762711864407}, {"nome": "Ourinhos/SP", "codigo": "100250030", "operacao": "OP II", "estado": "SP", "decidir": 33, "nao": 2, "nao_resp": 62, "sim": 50, "base": 147, "pct_sim": 0.3401360544217687}, {"nome": "Pedro Leopoldo/MG", "codigo": "100251058", "operacao": "OP II", "estado": "MG", "decidir": 88, "nao": 3, "nao_resp": 206, "sim": 186, "base": 483, "pct_sim": 0.38509316770186336}, {"nome": "Petrópolis/RJ", "codigo": "100250044", "operacao": "OP II", "estado": "RJ", "decidir": 64, "nao": 3, "nao_resp": 143, "sim": 178, "base": 388, "pct_sim": 0.4587628865979381}, {"nome": "Pindamonhangaba/SP", "codigo": "100254177", "operacao": "OP II", "estado": "SP", "decidir": 28, "nao": 1, "nao_resp": 65, "sim": 59, "base": 153, "pct_sim": 0.38562091503267976}, {"nome": "Presidente Dutra/MA", "codigo": "100250778", "operacao": "OP II", "estado": "MA", "decidir": 90, "nao": 2, "nao_resp": 185, "sim": 256, "base": 533, "pct_sim": 0.4803001876172608}, {"nome": "Quixeramobim/CE", "codigo": "100251044", "operacao": "OP II", "estado": "CE", "decidir": 103, "nao": 2, "nao_resp": 225, "sim": 149, "base": 479, "pct_sim": 0.31106471816283926}, {"nome": "Rio Claro/SP", "codigo": "100251106", "operacao": "OP II", "estado": "SP", "decidir": 43, "nao": 3, "nao_resp": 138, "sim": 135, "base": 319, "pct_sim": 0.4231974921630094}, {"nome": "Rio de Janeiro/RJ - Barra da Tijuca", "codigo": "100251317", "operacao": "OP II", "estado": "RJ", "decidir": 96, "nao": 13, "nao_resp": 253, "sim": 237, "base": 599, "pct_sim": 0.39565943238731216}, {"nome": "Rio de Janeiro/RJ - Botafogo", "codigo": "100250038", "operacao": "OP II", "estado": "RJ", "decidir": 37, "nao": 2, "nao_resp": 136, "sim": 110, "base": 285, "pct_sim": 0.38596491228070173}, {"nome": "Rio de Janeiro/RJ - Ilha do Governador", "codigo": "100250049", "operacao": "OP II", "estado": "RJ", "decidir": 102, "nao": 4, "nao_resp": 230, "sim": 307, "base": 643, "pct_sim": 0.4774494556765163}, {"nome": "Rio de Janeiro/RJ - Tijuca", "codigo": "100250034", "operacao": "OP II", "estado": "RJ", "decidir": 55, "nao": 5, "nao_resp": 172, "sim": 194, "base": 426, "pct_sim": 0.45539906103286387}, {"nome": "Santa Luzia/MG - São Benedito", "codigo": "100251231", "operacao": "OP II", "estado": "MG", "decidir": 81, "nao": 2, "nao_resp": 191, "sim": 186, "base": 460, "pct_sim": 0.4043478260869565}, {"nome": "São Gonçalo do Amarante/CE", "codigo": "100250472", "operacao": "OP II", "estado": "CE", "decidir": 150, "nao": 9, "nao_resp": 277, "sim": 338, "base": 774, "pct_sim": 0.43669250645994834}, {"nome": "São Gonçalo/RJ - Partage Shopping", "codigo": "100250549", "operacao": "OP II", "estado": "RJ", "decidir": 196, "nao": 9, "nao_resp": 387, "sim": 433, "base": 1025, "pct_sim": 0.4224390243902439}, {"nome": "São José dos Campos/SP", "codigo": "100251213", "operacao": "OP II", "estado": "SP", "decidir": 61, "nao": 7, "nao_resp": 166, "sim": 166, "base": 400, "pct_sim": 0.415}, {"nome": "São Paulo/SP - Santo Amaro", "codigo": "100258024", "operacao": "OP II", "estado": "SP", "decidir": 55, "nao": 6, "nao_resp": 124, "sim": 117, "base": 302, "pct_sim": 0.38741721854304634}, {"nome": "São Paulo/SP - Tatuapé", "codigo": "100251155", "operacao": "OP II", "estado": "SP", "decidir": 86, "nao": 5, "nao_resp": 166, "sim": 179, "base": 436, "pct_sim": 0.4105504587155963}, {"nome": "Sertãozinho/SP", "codigo": "100251105", "operacao": "OP II", "estado": "SP", "decidir": 7, "nao": 1, "nao_resp": 33, "sim": 42, "base": 83, "pct_sim": 0.5060240963855421}, {"nome": "Taubaté/SP", "codigo": "100255523", "operacao": "OP II", "estado": "SP", "decidir": 39, "nao": 4, "nao_resp": 84, "sim": 81, "base": 208, "pct_sim": 0.3894230769230769}, {"nome": "Tianguá/CE", "codigo": "100250630", "operacao": "OP II", "estado": "CE", "decidir": 88, "nao": 4, "nao_resp": 130, "sim": 156, "base": 378, "pct_sim": 0.4126984126984127}, {"nome": "Uberaba/MG", "codigo": "100250785", "operacao": "OP II", "estado": "MG", "decidir": 49, "nao": 1, "nao_resp": 118, "sim": 144, "base": 312, "pct_sim": 0.46153846153846156}, {"nome": "Vespasiano/MG", "codigo": "100251064", "operacao": "OP II", "estado": "MG", "decidir": 62, "nao": 6, "nao_resp": 131, "sim": 151, "base": 350, "pct_sim": 0.43142857142857144}, {"nome": "Vila Velha/ES", "codigo": "100250113", "operacao": "OP II", "estado": "ES", "decidir": 67, "nao": 4, "nao_resp": 224, "sim": 209, "base": 504, "pct_sim": 0.4146825396825397}, {"nome": "Vitória/ES - Centro Trade Center", "codigo": "100251229", "operacao": "OP II", "estado": "ES", "decidir": 41, "nao": 1, "nao_resp": 140, "sim": 149, "base": 331, "pct_sim": 0.4501510574018127}];
+const STATE_MAPS={"TO":"M22,8 L22,2 L18,2 L20,3 L19,5 L16,7 L16,12 L12,20 L12,28 L13,26 L13,28 L16,29 L18,28 L19,29 L22,30 L22,29 L27,28 L26,25 L27,24 L26,22 L28,19 L26,19 L24,15 L26,11 L24,11 L21,8 L22,8Z","MA":"M16,27 L16,29 L18,30 L18,26 L19,22 L24,19 L27,19 L27,12 L31,8 L26,6 L25,6 L22,8 L23,6 L22,6 L22,4 L20,4 L18,2 L14,11 L9,15 L13,15 L14,18 L12,21 L15,23 L16,23 L15,26 L16,27Z","GO":"M32,4 L28,4 L28,6 L24,5 L22,3 L21,5 L17,2 L14,12 L8,17 L6,21 L7,27 L15,30 L17,27 L23,25 L27,26 L29,24 L28,22 L30,20 L29,16 L25,15 L26,14 L29,14 L29,16 L31,16 L31,12 L33,12 L33,11 L34,12 L34,4 L32,4Z","SC":"M36,9 L37,5 L24,5 L18,10 L3,7 L2,13 L17,15 L23,21 L29,22 L26,27 L29,27 L36,21 L38,15 L36,9Z","MG":"M15,25 L17,25 L16,28 L18,30 L30,26 L32,22 L35,18 L34,15 L37,14 L36,11 L38,8 L33,7 L32,5 L28,3 L26,4 L25,2 L18,5 L18,4 L17,3 L17,5 L15,5 L16,7 L14,9 L15,11 L13,12 L14,14 L12,16 L9,15 L4,16 L2,20 L2,21 L7,20 L9,22 L9,21 L13,20 L15,25Z","SP":"M16,21 L17,25 L20,25 L22,27 L28,22 L36,19 L35,18 L38,17 L35,15 L29,17 L28,15 L29,12 L27,11 L25,6 L19,6 L19,8 L18,6 L13,5 L9,7 L5,14 L2,16 L14,17 L16,21Z","RJ":"M11,24 L28,24 L31,18 L38,15 L38,9 L29,4 L26,13 L2,19 L8,22 L2,24 L3,28 L3,25 L11,24Z","ES":"M22,26 L28,16 L29,6 L22,2 L17,5 L19,14 L11,26 L18,30 L22,26Z","MT":"M17,7 L16,6 L14,2 L13,6 L5,6 L5,12 L9,12 L9,14 L10,15 L7,19 L8,19 L9,22 L8,22 L9,25 L14,25 L13,28 L16,30 L20,28 L22,29 L25,29 L26,28 L25,30 L27,30 L27,28 L28,25 L33,22 L35,9 L17,7Z","CE":"M9,3 L9,13 L12,23 L14,24 L13,27 L17,27 L22,30 L24,27 L24,21 L31,13 L16,2 L9,3Z","RN":"M10,10 L2,20 L5,22 L16,17 L13,24 L20,27 L24,20 L38,22 L33,9 L15,5 L10,10Z","PR":"M21,27 L24,24 L35,24 L38,20 L37,18 L31,16 L30,9 L27,7 L10,5 L3,14 L2,21 L5,21 L7,25 L21,27Z","MS":"M7,4 L8,6 L5,13 L7,13 L5,14 L7,17 L6,22 L15,23 L17,30 L21,30 L24,25 L30,20 L35,11 L27,8 L26,6 L22,5 L24,2 L21,4 L14,2 L8,5 L7,4Z","PE":"M28,21 L31,19 L36,19 L38,14 L36,11 L26,16 L24,14 L26,11 L25,10 L20,13 L14,13 L11,10 L7,10 L6,14 L2,18 L6,22 L13,17 L18,19 L19,21 L22,19 L28,21Z","DF":"M12,26 L38,26 L38,9 L5,6 L2,26 L12,26Z"};
+const STATE_COLORS={"TO":"#27A7D8","MA":"#E67E22","GO":"#16A085","SC":"#8E44AD","MG":"#E84393","SP":"#2D83D5","RJ":"#E05A47","ES":"#00A6A6","MT":"#7B61A8","CE":"#D9A21B","RN":"#E76F51","PR":"#3A9D5D","MS":"#4C78A8","PE":"#C05A91","DF":"#6C8E3D"};
+const fmt=n=>Number(n||0).toLocaleString('pt-BR');
+const pct=n=>(n*100).toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2})+'%';
+let operation='TODAS', selectedPolo='TODOS', query='';
+const ops=document.getElementById('ops'), poloFilter=document.getElementById('poloFilter'), search=document.getElementById('search');
+function refreshPoloOptions(){
+ const dl=document.getElementById('poloOptions');
+ dl.innerHTML=[...DATA].sort((a,b)=>a.nome.localeCompare(b.nome,'pt-BR'))
+  .map(x=>`<option value="${x.nome}">${x.operacao} · ${x.codigo}</option>`).join('');
+}
+function refreshPoloFilter(){
+ const available=DATA.filter(x=>operation==='TODAS'||x.operacao===operation)
+  .sort((a,b)=>a.nome.localeCompare(b.nome,'pt-BR'));
+ if(selectedPolo!=='TODOS'&&!available.some(x=>x.nome===selectedPolo)) selectedPolo='TODOS';
+ poloFilter.innerHTML='<option value="TODOS">TODOS OS POLOS</option>'+available.map(x=>`<option value="${x.nome}">${x.nome.toUpperCase()} · ${x.estado}</option>`).join('');
+ poloFilter.value=selectedPolo;
+}
+refreshPoloOptions();refreshPoloFilter();
+function filtered(){return DATA.filter(x=>(operation==='TODAS'||x.operacao===operation)&&(selectedPolo==='TODOS'||x.nome===selectedPolo)&&(`${x.nome} ${x.codigo}`.toLowerCase().includes(query.toLowerCase())));}
+function totals(a){return a.reduce((s,x)=>({base:s.base+x.base,sim:s.sim+x.sim,nao:s.nao+x.nao,decidir:s.decidir+x.decidir,nao_resp:s.nao_resp+x.nao_resp}),{base:0,sim:0,nao:0,decidir:0,nao_resp:0});}
+function kpi(label,value,note,cls=''){return `<div class="kpi ${cls}"><div class="label">${label}</div><div class="value">${value}</div><div class="note">${note}</div></div>`}
+function addTotals(a,b){
+ return {base:a.base+b.base,sim:a.sim+b.sim,nao:a.nao+b.nao,decidir:a.decidir+b.decidir,nao_resp:a.nao_resp+b.nao_resp};
+}
+function renderKpis(a){
+ let t;
+ if(operation==='TODAS'){
+  const opI=totals(a.filter(x=>x.operacao==='OP I'));
+  const opII=totals(a.filter(x=>x.operacao==='OP II'));
+  t=addTotals(opI,opII);
+ }else{t=totals(a);}
+ const origem=operation==='TODAS'?'Soma Operação I + Operação II':'Operação selecionada';
+ document.getElementById('kpis').innerHTML=[
+ kpi('Taxa de SIM',pct(t.base?t.sim/t.base:0),origem,'primary'),
+ kpi('Base total',fmt(t.base),'Soma OP I + OP II'),
+ kpi('Respostas SIM',fmt(t.sim),'Soma das confirmações recebidas','good'),
+ kpi('Decidir depois',fmt(t.decidir),pct(t.base?t.decidir/t.base:0)+' da base'),
+ kpi('Não respondido',fmt(t.nao_resp),pct(t.base?t.nao_resp/t.base:0)+' da base','warn')
+ ].join('');
+}
+function rankPanel(a,kind){let sorted=[...a].sort((x,y)=>x.pct_sim-y.pct_sim);if(kind==='best')sorted=sorted.reverse().slice(0,10);else sorted=sorted.slice(0,10);
+let title=kind==='best'?'🏆 TOP 10 • MELHORES':'⚠️ TOP 10 • PONTOS DE ATENÇÃO';
+return `<div class="panel"><div class="panel-title">${title}<span class="hint">${sorted.length} polos</span></div>${sorted.map((x,i)=>`<div class="rank-row"><div class="rank-no">${i+1}</div><div><div class="rank-name">${x.nome}</div><div class="rank-meta">${x.estado} · ${x.operacao} · ${fmt(x.sim)} de ${fmt(x.base)} SIM</div><div class="bar"><span style="width:${Math.max(0,Math.min(100,x.pct_sim*100))}%"></span></div></div><div class="rank-value">${pct(x.pct_sim)}</div></div>`).join('')||'<div class="empty">Sem polos para exibir.</div>'}</div>`}
+function renderOps(){let opsList=['OP I','OP II'];document.getElementById('opCards').innerHTML=opsList.map(op=>{let a=filtered().filter(x=>x.operacao===op),t=totals(a);return `<div class="panel"><div class="panel-title">${op==='OP I'?'Operação Própria I':'Operação Própria II'}<span class="hint">${a.length} polos</span></div><div style="padding:15px;display:grid;grid-template-columns:repeat(3,1fr);gap:8px"><div><div class="hint">Base</div><b>${fmt(t.base)}</b></div><div><div class="hint">SIM</div><b style="color:var(--green)">${fmt(t.sim)}</b></div><div><div class="hint">% SIM</div><b style="color:var(--yellow)">${pct(t.base?t.sim/t.base:0)}</b></div></div></div>`}).join('');}
+function renderRanks(){let a=filtered();document.getElementById('ranksGeneral').innerHTML=rankPanel(a,'best')+rankPanel(a,'worst');}
+
+const projectionInputs={
+ 'OP I':{startDate:'2026-11-20',endDate:'2026-12-31'},
+ 'OP II':{startDate:'2026-11-20',endDate:'2026-12-31'}
+};
+function operationTotals(op){
+ const rows=DATA.filter(x=>x.operacao===op);
+ return rows.reduce((a,x)=>{
+  a.base+=Number(x.base)||0;
+  a.sim+=Number(x.sim)||0;
+  return a;
+ },{base:0,sim:0});
+}
+function projectionMarkup(op){
+ const t=operationTotals(op),cfg=projectionInputs[op],key=op.replace(' ','-');
+ return `<div class="projection-panel" data-projection="${op}">
+  <div class="projection-title">CALENDÁRIO DE RESPOSTAS POSITIVAS NECESSÁRIAS — ${op==='OP I'?'OPERAÇÃO I':'OPERAÇÃO II'}</div>
+  <div class="projection-sub">META DIÁRIA DE RESPOSTAS “SIM” PARA ALCANÇAR 100% DA BASE ATÉ 31/12/2026. O TOTAL, O PERCENTUAL E O GAP AVANÇAM AUTOMATICAMENTE CONFORME O CALENDÁRIO.</div>
+  <div class="projection-controls">
+   <div><label for="start-${key}">INÍCIO DO PROCESSO</label><input id="start-${key}" data-proj-field="startDate" type="date" value="${cfg.startDate}"></div>
+   <div><label for="end-${key}">FIM DO PROCESSO</label><input id="end-${key}" data-proj-field="endDate" type="date" min="${cfg.startDate}" value="${cfg.endDate}"></div>
+  </div>
+  <div class="projection-results">
+   <div class="projection-result"><small>BASE TOTAL</small><strong data-proj-output="base">${fmt(t.base)}</strong></div>
+   <div class="projection-result"><small>SIM REALIZADOS</small><strong data-proj-output="sim">${fmt(t.sim)}</strong></div>
+   <div class="projection-result"><small>FALTAM PARA 100%</small><strong data-proj-output="gap">${fmt(Math.max(0,t.base-t.sim))}</strong></div>
+   <div class="projection-result highlight"><small>META NECESSÁRIA POR DIA</small><strong data-proj-output="daily">—</strong></div>
+  </div>
+  <div class="projection-calendar-wrap">
+   <div class="projection-calendar-head"><span>PLANEJAMENTO DIÁRIO DE RESPOSTAS POSITIVAS</span><span data-proj-output="period">20/11/2026 A 31/12/2026</span></div>
+   <div class="projection-status" data-proj-output="status">CALCULANDO META...</div>
+   <div class="projection-calendar-scroll" data-proj-output="calendar"><div class="projection-calendar-empty">CALCULANDO CALENDÁRIO...</div></div>
+   <div class="projection-calendar-summary" data-proj-output="summary">A META DIÁRIA SERÁ DISTRIBUÍDA PELOS DIAS RESTANTES.</div>
+   <div class="projection-calendar-actions"><button type="button" class="projection-refresh" data-proj-refresh>ATUALIZAR CALENDÁRIO</button></div>
+  </div>
+ </div>`;
+}
+function parseLocalDate(value){
+ const m=String(value||'').match(/^(\d{4})-(\d{2})-(\d{2})$/);
+ if(!m)return null;
+ const d=new Date(Number(m[1]),Number(m[2])-1,Number(m[3]));
+ return d.getFullYear()===Number(m[1])&&d.getMonth()===Number(m[2])-1&&d.getDate()===Number(m[3])?d:null;
+}
+function dateLabel(d){
+ return d.toLocaleDateString('pt-BR',{day:'2-digit',month:'2-digit',year:'numeric'});
+}
+function updateProjectionPanel(panel){
+ const op=panel.dataset.projection,t=operationTotals(op),cfg=projectionInputs[op];
+ const start=parseLocalDate(cfg.startDate),end=parseLocalDate(cfg.endDate);
+ const today=new Date();today.setHours(0,0,0,0);
+ const gap=Math.max(0,t.base-t.sim);
+ const out=name=>panel.querySelector(`[data-proj-output="${name}"]`);
+ out('base').textContent=fmt(t.base);
+ out('sim').textContent=fmt(t.sim);
+ out('gap').textContent=fmt(gap);
+ out('period').textContent=`${cfg.startDate.split('-').reverse().join('/')} A ${cfg.endDate.split('-').reverse().join('/')}`;
+ const calendar=out('calendar');
+ if(!start||!end||end<start){
+  out('daily').textContent='—';
+  out('status').textContent='PERÍODO INVÁLIDO';
+  calendar.innerHTML='<div class="projection-calendar-empty">A DATA FINAL PRECISA SER IGUAL OU POSTERIOR À DATA INICIAL.</div>';
+  out('summary').textContent='CORRIJA AS DATAS PARA GERAR O CALENDÁRIO.';
+  return;
+ }
+ if(!t.base){
+  out('daily').textContent='—';
+  out('status').textContent='SEM BASE CADASTRADA';
+  calendar.innerHTML='<div class="projection-calendar-empty">NÃO HÁ BASE DE ALUNOS PARA ESTA OPERAÇÃO.</div>';
+  out('summary').textContent='AGUARDANDO DADOS DA OPERAÇÃO.';
+  return;
+ }
+ const firstRemaining=new Date(Math.max(start.getTime(),today.getTime()));
+ const remaining=[];
+ if(end>=today){
+  for(let d=new Date(firstRemaining);d<=end;d.setDate(d.getDate()+1)) remaining.push(new Date(d));
+ }
+ if(gap===0){
+  out('daily').textContent='0';
+  out('status').textContent='META DE 100% ALCANÇADA';
+  calendar.innerHTML='<div class="projection-calendar-empty">TODAS AS RESPOSTAS POSITIVAS NECESSÁRIAS JÁ FORAM ALCANÇADAS.</div>';
+  out('summary').textContent=`SIM REALIZADOS: ${fmt(t.sim)} · BASE: ${fmt(t.base)} · ATINGIMENTO: 100%.`;
+  return;
+ }
+ if(!remaining.length){
+  out('daily').textContent='PRAZO ENCERRADO';
+  out('status').textContent='NÃO HÁ DIAS RESTANTES';
+  calendar.innerHTML='<div class="projection-calendar-empty">O PERÍODO TERMINOU E AINDA FALTAM RESPOSTAS POSITIVAS PARA A META DE 100%.</div>';
+  out('summary').textContent=`FALTARAM ${fmt(gap)} RESPOSTAS SIM PARA ALCANÇAR 100% DA BASE.`;
+  return;
+ }
+ const days=remaining.length;
+ const daily=Math.ceil(gap/days);
+ out('daily').textContent=fmt(daily);
+ out('status').textContent=`${fmt(days)} DIAS RESTANTES · ${fmt(gap)} RESPOSTAS SIM A DISTRIBUIR`;
+ let cumulativePlan=0,rows='';
+ remaining.forEach((d,i)=>{
+  const cumulativeRequired=Math.ceil(gap*(i+1)/days);
+  const dailyRequired=cumulativeRequired-cumulativePlan;
+  cumulativePlan=cumulativeRequired;
+  const projectedTotal=Math.min(t.base,t.sim+cumulativePlan);
+  const projectedPct=t.base?projectedTotal/t.base*100:0;
+  const projectedGap=Math.max(0,t.base-projectedTotal);
+  const dayName=d.toLocaleDateString('pt-BR',{weekday:'short'}).replace('.','').toUpperCase();
+  const todayClass=d.getTime()===today.getTime()?'today-row':'';
+  const width=Math.max(0,Math.min(100,projectedPct));
+  rows+=`<tr class="${todayClass}">
+   <td>${dateLabel(d)} · ${dayName}</td>
+   <td class="required">${fmt(dailyRequired)}</td>
+   <td class="projection-total">${fmt(projectedTotal)}</td>
+   <td><div class="projection-progress"><span class="projection-pct">${projectedPct.toFixed(2).replace('.',',')}%</span><span class="projection-progress-track"><span class="projection-progress-fill" style="width:${width}%"></span></span></div></td>
+   <td class="projection-gap">${fmt(projectedGap)}</td>
+  </tr>`;
+ });
+ calendar.innerHTML=`<table class="projection-calendar"><thead><tr><th>DATA</th><th>SIM NECESSÁRIOS NO DIA</th><th>TOTAL DE RESPONDENTES PROJETADO</th><th>% DE ATINGIMENTO PROJETADO</th><th>GAP RESTANTE</th></tr></thead><tbody>${rows}</tbody></table>`;
+ out('summary').innerHTML=`PROJEÇÃO AUTOMÁTICA: <strong>${fmt(Math.min(t.base,t.sim+gap))} RESPONDENTES SIM</strong> ATÉ O FIM DO PERÍODO · <strong>100%</strong> DE ATINGIMENTO · <strong>GAP ZERO</strong> SE A META DIÁRIA FOR CUMPRIDA.`;
+}
+
+
+function actionPlanMarkup(op,total){
+ const opName=op==='OP I'?'OPERAÇÃO PRÓPRIA I':'OPERAÇÃO PRÓPRIA II';
+ const pctSim=total.base?total.sim/total.base*100:0;
+ const priority=total.nao_resp+total.decidir;
+ const key=op.replace(' ','-');
+ const msg1=`Olá, [NOME]! Tudo bem? 😊\n\nEstamos passando para lembrar que o período de Rematrícula Bonificada 2027/1 está em andamento.\n\nIdentificamos que sua confirmação ainda está pendente. Queremos ajudar você a seguir com sua jornada acadêmica!\n\nAcesse o canal de atendimento/ambiente acadêmico para consultar as orientações e registrar sua resposta.\n\nSe precisar de ajuda, conte com a equipe do Polo [NOME DO POLO].`;
+ const msg2=`Olá, [NOME]! Como vai? 😊\n\nVimos que você ainda está avaliando sua rematrícula para 2027/1.\n\nEste é um convite para não deixar sua decisão para a última hora. Nossa equipe pode esclarecer dúvidas sobre o processo e as condições da Rematrícula Bonificada, conforme as regras vigentes.\n\nPodemos ajudar você a concluir sua confirmação? Responda esta mensagem ou fale com o Polo [NOME DO POLO].`;
+ return `<section class="action-plan" data-action-plan="${op}">
+  <div class="action-plan-head"><div><div class="action-plan-title">PLANO DE AÇÃO — ${opName}</div><div class="action-plan-sub">ROTEIRO DE EXECUÇÃO PARA AMPLIAR AS CONFIRMAÇÕES SIM E ACOMPANHAR A EVOLUÇÃO DA OPERAÇÃO</div></div></div>
+  <div class="action-focus">
+   <div class="action-focus-card"><small>BASE AINDA SEM SIM (NÃO RESPONDIDOS + DECIDIR DEPOIS)</small><strong>${fmt(priority)}</strong></div>
+   <div class="action-focus-card"><small>NÃO RESPONDIDOS</small><strong>${fmt(total.nao_resp)}</strong></div>
+   <div class="action-focus-card"><small>ATINGIMENTO ATUAL DE SIM</small><strong>${pct(pctSim/100)}</strong></div>
+  </div>
+  <div class="action-steps">
+   <article class="action-step"><div class="action-step-top"><span class="action-step-no">1</span><h4>PRIORIZAR A BASE PENDENTE</h4></div><p>Extrair a relação de acadêmicos sem resposta e “Decidir depois”. Separar por polo e distribuir listas para contato individual, começando pelos maiores volumes.</p><div class="action-meta"><label>RESPONSÁVEL<input type="text" placeholder="Nome do responsável"></label><label>PREVISÃO<input type="date"></label><label>STATUS<select><option>A iniciar</option><option>Em andamento</option><option>Concluído</option><option>Replanejar</option></select></label><label>FREQUÊNCIA<select><option>Diária</option><option>2 vezes na semana</option><option>Semanal</option></select></label></div></article>
+   <article class="action-step"><div class="action-step-top"><span class="action-step-no">2</span><h4>REALIZAR CONTATO ATIVO</h4></div><p>Executar contato por WhatsApp e telefone, com abordagem personalizada. Registrar dúvidas, objeções e retorno no controle do polo; evitar disparos repetidos para quem já respondeu.</p><div class="action-meta"><label>RESPONSÁVEL<input type="text" placeholder="Nome do responsável"></label><label>PREVISÃO<input type="date"></label><label>STATUS<select><option>A iniciar</option><option>Em andamento</option><option>Concluído</option><option>Replanejar</option></select></label><label>FREQUÊNCIA<select><option>Diária</option><option>2 vezes na semana</option><option>Semanal</option></select></label></div></article>
+   <article class="action-step"><div class="action-step-top"><span class="action-step-no">3</span><h4>TRATAR DÚVIDAS E CONVERTER</h4></div><p>Direcionar questões acadêmicas ou financeiras aos canais responsáveis, esclarecer as regras vigentes da campanha e acompanhar cada aluno até o registro da resposta SIM.</p><div class="action-meta"><label>RESPONSÁVEL<input type="text" placeholder="Nome do responsável"></label><label>PREVISÃO<input type="date"></label><label>STATUS<select><option>A iniciar</option><option>Em andamento</option><option>Concluído</option><option>Replanejar</option></select></label><label>FREQUÊNCIA<select><option>Diária</option><option>2 vezes na semana</option><option>Semanal</option></select></label></div></article>
+   <article class="action-step"><div class="action-step-top"><span class="action-step-no">4</span><h4>MONITORAR RESULTADO POR POLO</h4></div><p>Atualizar diariamente SIM, percentual e GAP; comparar evolução entre polos, reconhecer avanços e montar plano de recuperação para os polos abaixo da média da operação.</p><div class="action-meta"><label>RESPONSÁVEL<input type="text" placeholder="Nome do responsável"></label><label>PREVISÃO<input type="date"></label><label>STATUS<select><option>A iniciar</option><option>Em andamento</option><option>Concluído</option><option>Replanejar</option></select></label><label>FREQUÊNCIA<select><option>Diária</option><option>2 vezes na semana</option><option>Semanal</option></select></label></div></article>
+  </div>
+  <div class="whatsapp-models">
+   <div class="whatsapp-card"><h4>MODELO 1 — LEMBRETE DE REMATRÍCULA</h4><p>Para acadêmicos que ainda não registraram resposta.</p><textarea data-wa-message>${msg1}</textarea><div class="whatsapp-actions"><button class="whatsapp-copy" type="button" data-copy-message>COPIAR MENSAGEM</button></div></div>
+   <div class="whatsapp-card"><h4>MODELO 2 — RETOMADA DE DECISÃO</h4><p>Para acadêmicos que estão avaliando ou precisam de orientação.</p><textarea data-wa-message>${msg2}</textarea><div class="whatsapp-actions"><button class="whatsapp-copy" type="button" data-copy-message>COPIAR MENSAGEM</button></div></div>
+  </div>
+ </section>`;
+}
+function renderStates(){
+ const all=filtered();
+ const operationGroups=operation==='TODAS'?['OP I','OP II']:[operation];
+ document.getElementById('states').innerHTML=operationGroups.map(op=>{
+  const opRows=all.filter(x=>x.operacao===op),byState={};
+  opRows.forEach(x=>(byState[x.estado]??=[]).push(x));
+  const total=totals(opRows);
+  const opTitle=op==='OP I'?'OPERAÇÃO PRÓPRIA I':'OPERAÇÃO PRÓPRIA II';
+  const statesHtml=Object.keys(byState).sort().map(uf=>{
+   const list=byState[uf].sort((x,y)=>y.pct_sim-x.pct_sim),t=totals(list);
+   return `<details class="state"><summary><span class="uf-label"><svg class="uf-map" viewBox="0 0 40 32" role="img" aria-label="MAPA DO ESTADO ${uf}"><path d="${STATE_MAPS[uf]||''}" fill="${STATE_COLORS[uf]||'#E0A800'}" stroke="#FFFFFF" stroke-width="1.1" stroke-linejoin="round"/></svg><span class="uf">${uf}</span></span><span class="state-stat">${pct(t.base?t.sim/t.base:0)}<small>${list.length} POLOS · ${fmt(t.sim)}/${fmt(t.base)} SIM</small></span></summary>${list.map(x=>`<div class="polo"><div><div class="polo-name">${x.nome}</div><div class="polo-sub">${op} · CÓD. ${x.codigo} · SIM ${fmt(x.sim)} / BASE ${fmt(x.base)}</div></div><div class="polo-pct">${pct(x.pct_sim)}</div></div>`).join('')}</details>`;
+  }).join('');
+  return `<div class="operation-state-group"><div class="panel-title operation-state-title">${opTitle}<span class="hint">${opRows.length} POLOS · ${pct(total.base?total.sim/total.base:0)} SIM</span></div>${projectionMarkup(op)}<div class="states">${statesHtml||'<div class="empty">NENHUM POLO NESTA OPERAÇÃO.</div>'}</div>${actionPlanMarkup(op,total)}</div>`;
+ }).join('')||'<div class="empty">NENHUM POLO ENCONTRADO.</div>';
+}
+
+function renderDiagnosis(){
+ const rows=filtered();
+ const t=totals(rows);
+ const pending=t.decidir+t.nao_resp;
+ const answered=t.sim+t.nao+t.decidir;
+ const pctSim=t.base?t.sim/t.base:0;
+ const pctPending=t.base?pending/t.base:0;
+ const pctNonResponse=t.base?t.nao_resp/t.base:0;
+ const fmtPct=v=>(v*100).toFixed(2).replace('.',',')+'%';
+ const stateMap={};
+ rows.forEach(x=>{
+  if(!stateMap[x.estado])stateMap[x.estado]={estado:x.estado,base:0,sim:0,decidir:0,nao_resp:0,nao:0,polos:0};
+  const z=stateMap[x.estado];z.base+=x.base;z.sim+=x.sim;z.decidir+=x.decidir;z.nao_resp+=x.nao_resp;z.nao+=x.nao;z.polos++;
+ });
+ const states=Object.values(stateMap).map(z=>({...z,pending:z.decidir+z.nao_resp,pct:z.base?z.sim/z.base:0})).sort((a,b)=>b.pending-a.pending);
+ const topStates=states.slice(0,6);
+ const topPoles=[...rows].map(x=>({...x,pending:x.decidir+x.nao_resp})).sort((a,b)=>b.pending-a.pending).slice(0,8);
+ const scenario=[5,10,15,20].map(rate=>({rate,extra:Math.round(pending*rate/100)}));
+ const opLabel=operation==='TODAS'?'OPERAÇÕES PRÓPRIAS':operation==='OP I'?'OPERAÇÃO PRÓPRIA I':'OPERAÇÃO PRÓPRIA II';
+ const mainDifficulty=t.nao_resp>=t.decidir?'O maior volume de oportunidade está entre os acadêmicos que ainda não responderam.':'O maior volume de oportunidade está entre os acadêmicos que adiaram a decisão.';
+ const html=`
+  <div class="section-head"><h2>DIAGNÓSTICO E OPORTUNIDADES — ${opLabel}</h2><p>LEITURA GERENCIAL DA BASE ATUAL, COM FOCO EM RESPOSTA, CONVERSÃO E PRIORIZAÇÃO</p></div>
+  <div class="diagnosis-grid">
+   <div class="diagnosis-card"><small>BASE ANALISADA</small><strong>${fmt(t.base)}</strong><div class="diagnosis-note">${rows.length} polos considerados nos filtros atuais</div></div>
+   <div class="diagnosis-card good"><small>SIM REGISTRADOS</small><strong>${fmt(t.sim)}</strong><div class="diagnosis-note">${fmtPct(pctSim)} da base</div></div>
+   <div class="diagnosis-card alert"><small>NÃO RESPONDIDOS</small><strong>${fmt(t.nao_resp)}</strong><div class="diagnosis-note">${fmtPct(pctNonResponse)} da base</div></div>
+   <div class="diagnosis-card warn"><small>PENDENTES DE CONVERSÃO*</small><strong>${fmt(pending)}</strong><div class="diagnosis-note">${fmtPct(pctPending)} da base · decidir depois + não respondidos</div></div>
+  </div>
+  <div class="diagnosis-callout"><strong>LEITURA PRINCIPAL:</strong> ${mainDifficulty} ${fmt(pending)} acadêmicos estão em “DECIDIR DEPOIS” ou “NÃO RESPONDIDO”. Esse grupo representa ${fmtPct(pctPending)} da base filtrada. A prioridade é recuperar contato, entender objeções e acompanhar o aluno até a resposta.</div>
+  <div class="diagnosis-columns">
+   <div class="diagnosis-panel"><h4>COMPOSIÇÃO DAS RESPOSTAS</h4><table class="diagnosis-table"><tbody>
+    <tr><td>SIM</td><td class="num">${fmt(t.sim)}</td><td class="num">${fmtPct(t.base?t.sim/t.base:0)}</td></tr>
+    <tr><td>NÃO RESPONDIDO</td><td class="num">${fmt(t.nao_resp)}</td><td class="num">${fmtPct(t.base?t.nao_resp/t.base:0)}</td></tr>
+    <tr><td>DECIDIR DEPOIS</td><td class="num">${fmt(t.decidir)}</td><td class="num">${fmtPct(t.base?t.decidir/t.base:0)}</td></tr>
+    <tr><td>NÃO</td><td class="num">${fmt(t.nao)}</td><td class="num">${fmtPct(t.base?t.nao/t.base:0)}</td></tr>
+   </tbody></table></div>
+   <div class="diagnosis-panel"><h4>POSSIBILIDADE DE CONVERSÃO — CENÁRIOS</h4><p style="font-size:11px;color:var(--muted);margin:0 0 10px">Simulações sobre o grupo pendente (não respondidos + decidir depois).</p><div class="scenario-grid">${scenario.map(x=>`<div class="scenario"><small>${x.rate}% DO PENDENTE</small><strong>+${fmt(x.extra)}</strong><span>SIM adicionais</span></div>`).join('')}</div><p class="diagnosis-footnote">Cenários ilustrativos, não previsões. O volume adicional considera a taxa hipotética aplicada ao total pendente.</p></div>
+  </div>
+  <div class="diagnosis-section"><h3>ESTADOS COM MAIOR VOLUME DE OPORTUNIDADE</h3><p>Ordenados pelo número de acadêmicos em “NÃO RESPONDIDO” + “DECIDIR DEPOIS”. Use o filtro de operação acima para alternar as carteiras.</p>
+   <div class="diagnosis-panel"><table class="diagnosis-table"><thead><tr><th>ESTADO</th><th class="num">POLOS</th><th class="num">SIM %</th><th class="num">NÃO RESP.</th><th class="num">DECIDIR</th><th class="num">PENDENTES</th></tr></thead><tbody>
+   ${topStates.map(z=>`<tr><td><strong>${z.estado}</strong></td><td class="num">${fmt(z.polos)}</td><td class="num">${fmtPct(z.pct)}</td><td class="num">${fmt(z.nao_resp)}</td><td class="num">${fmt(z.decidir)}</td><td class="num"><span class="diagnosis-pill">${fmt(z.pending)}</span></td></tr>`).join('')}
+   </tbody></table></div>
+  </div>
+  <div class="diagnosis-section diagnosis-polos"><h3>POLOS COM MAIOR VOLUME DE PENDÊNCIAS</h3><p>Lista de polos que concentram o maior número de alunos sem SIM registrado. A priorização deve considerar também o percentual de SIM e a capacidade de contato.</p>
+   <div class="diagnosis-panel"><table class="diagnosis-table diagnosis-poles-table"><colgroup><col style="width:55%"><col style="width:19%"><col style="width:13%"><col style="width:13%"></colgroup><thead><tr><th>POLO</th><th>OPERAÇÃO</th><th class="num">SIM %</th><th class="num">PENDENTES</th></tr></thead><tbody>
+   ${topPoles.map(z=>`<tr><td>${z.nome}</td><td>${z.operacao==='OP I'?'OP. I':'OP. II'}</td><td class="num">${fmtPct(z.pct_sim)}</td><td class="num"><span class="diagnosis-pill">${fmt(z.pending)}</span></td></tr>`).join('')}
+   </tbody></table></div>
+  </div>
+  <div class="diagnosis-section"><h3>PRINCIPAIS FRENTES DE ATUAÇÃO</h3><div class="diagnosis-actions">
+   <div class="diagnosis-action"><h4>1. RECUPERAR NÃO RESPONDIDOS</h4><p>Validar telefones e canais de contato, separar listas por polo, fazer contato ativo e registrar tentativas e retornos. Evitar mensagens repetidas para quem já respondeu.</p></div>
+   <div class="diagnosis-action"><h4>2. CONVERTER INDECISOS</h4><p>Identificar o motivo da indecisão, esclarecer dúvidas acadêmicas e financeiras, explicar as condições vigentes e combinar uma data de retorno para acompanhar a decisão.</p></div>
+   <div class="diagnosis-action"><h4>3. GERIR A EXECUÇÃO</h4><p>Definir responsável e meta diária por polo, monitorar SIM, percentual e GAP, cobrar plano de recuperação dos polos críticos e reconhecer a evolução.</p></div>
+  </div></div>
+  <p class="diagnosis-footnote">*“PENDENTES DE CONVERSÃO” é um agrupamento operacional de “NÃO RESPONDIDO” + “DECIDIR DEPOIS”; não significa que todos esses acadêmicos irão converter. A base mostra o status, mas não informa os motivos da ausência de resposta ou da indecisão. As causas devem ser investigadas com os polos. Os indicadores respeitam os filtros de operação, polo e busca selecionados.</p>`;
+ document.getElementById('diagnosisContent').innerHTML=html;
+}
+function renderTable(){document.getElementById('tbody').innerHTML=filtered().sort((a,b)=>a.nome.localeCompare(b.nome,'pt-BR')).map(x=>`<tr><td>${x.nome}<div class="hint">Cód. ${x.codigo}</div></td><td>${x.estado}</td><td>${x.operacao}</td><td>${fmt(x.base)}</td><td>${fmt(x.sim)}</td><td style="color:var(--yellow);font-weight:800">${pct(x.pct_sim)}</td><td>${fmt(x.nao)}</td><td>${fmt(x.decidir)}</td><td>${fmt(x.nao_resp)}</td></tr>`).join('');}
+function render(){let a=filtered();renderKpis(a);renderRanks();renderStates();document.querySelectorAll('[data-projection]').forEach(updateProjectionPanel);renderTable();renderDiagnosis();}
+ops.addEventListener('click',e=>{let b=e.target.closest('button[data-op]');if(!b)return;operation=b.dataset.op;ops.querySelectorAll('button').forEach(x=>x.classList.toggle('active',x===b));refreshPoloFilter();render()});
+function handleProjectionDateChange(e){
+ const input=e.target.closest('input[data-proj-field]');
+ if(!input)return;
+ const panel=input.closest('[data-projection]');
+ if(!panel)return;
+ const op=panel.dataset.projection,field=input.dataset.projField;
+ projectionInputs[op][field]=input.value;
+ const endInput=panel.querySelector('[data-proj-field="endDate"]');
+ const startInput=panel.querySelector('[data-proj-field="startDate"]');
+ endInput.min=startInput.value;
+ if(endInput.value<startInput.value){endInput.value=startInput.value;projectionInputs[op].endDate=startInput.value;}
+ updateProjectionPanel(panel);
+}
+
+document.getElementById('states').addEventListener('click',async e=>{
+ const button=e.target.closest('[data-copy-message]');
+ if(!button)return;
+ const area=button.closest('.whatsapp-card').querySelector('[data-wa-message]');
+ try{
+  if(navigator.clipboard&&window.isSecureContext){await navigator.clipboard.writeText(area.value);}
+  else{area.focus();area.select();document.execCommand('copy');}
+  button.textContent='MENSAGEM COPIADA!';
+ }catch(err){
+  area.focus();area.select();button.textContent='SELECIONE E COPIE';
+ }
+ setTimeout(()=>button.textContent='COPIAR MENSAGEM',1800);
+});
+document.getElementById('states').addEventListener('input',handleProjectionDateChange);
+document.getElementById('states').addEventListener('change',handleProjectionDateChange);
+document.getElementById('states').addEventListener('click',e=>{
+ const button=e.target.closest('[data-proj-refresh]');
+ if(!button)return;
+ const panel=button.closest('[data-projection]');
+ updateProjectionPanel(panel);
+});
+
+poloFilter.addEventListener('change',e=>{selectedPolo=e.target.value;render()});search.addEventListener('input',e=>{query=e.target.value;render()});
+document.querySelectorAll('.tab').forEach(b=>b.addEventListener('click',()=>{document.querySelectorAll('.tab').forEach(x=>x.classList.toggle('active',x===b));['geral','diagnostico','dados'].forEach(v=>document.getElementById('view-'+v).hidden=v!==b.dataset.view)}));
+render();
+</script></body></html>
