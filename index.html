@@ -200,9 +200,21 @@ footer{font-size:12px}
 .diagnosis-poles-table th:nth-child(2),.diagnosis-poles-table td:nth-child(2){text-align:left}
 .diagnosis-poles-table th:nth-child(3),.diagnosis-poles-table td:nth-child(3),.diagnosis-poles-table th:nth-child(4),.diagnosis-poles-table td:nth-child(4){text-align:right}
 @media(max-width:700px){.diagnosis-poles-table th,.diagnosis-poles-table td{padding:8px 5px;font-size:10px}}
+ 
+.history-panel{background:#fff;border:1px solid var(--line);border-radius:12px;padding:16px;box-shadow:0 2px 8px rgba(28,45,75,.035)}
+.history-controls{display:flex;align-items:end;gap:12px;flex-wrap:wrap}
+.history-controls label{display:block;color:var(--muted);font-size:12px;font-weight:800;margin-bottom:6px}
+.history-controls input{padding:10px 12px;border:1px solid #cbd5e3;border-radius:8px;color:var(--text);font:inherit}
+.history-controls button{background:var(--yellow);border:0;border-radius:8px;padding:12px 16px;font-weight:900;color:#263650;cursor:pointer}
+.history-help,.history-foot{font-size:12px;color:var(--muted);line-height:1.5}
+.history-status{margin:10px 0 14px;padding:10px 12px;background:#fff9e8;border-left:4px solid var(--yellow);border-radius:7px;font-size:12px;font-weight:800;color:#34435c}
+.history-table{min-width:900px}
+.history-table td.positive{color:var(--green);font-weight:900}
+.history-table td.negative{color:var(--red);font-weight:900}
+.history-foot{margin-top:12px}
 </style></head><body>
 <header><div class="brand"><div class="logo">UNI</div><div><h1>Painel de Rematrícula Bonificada • 2027/1</h1><div class="sub">Acompanhamento das respostas por operação, estado e polo</div></div></div>
-<nav class="tabs"><button class="tab active" data-view="geral">Visão geral</button><button class="tab" data-view="diagnostico">DIAGNÓSTICO E OPORTUNIDADES</button><button class="tab" data-view="dados">Consulta de polos</button></nav></header>
+<nav class="tabs"><button class="tab active" data-view="geral">Visão geral</button><button class="tab" data-view="diagnostico">DIAGNÓSTICO E OPORTUNIDADES</button><button class="tab" data-view="evolucao">EVOLUÇÃO DIÁRIA</button><button class="tab" data-view="dados">Consulta de polos</button></nav></header>
 <main>
 <div class="toolbar"><label>CONSULTA POR OPERAÇÃO</label><div class="switch" id="ops"><button class="active" data-op="TODAS">OPERAÇÕES PRÓPRIAS</button><button data-op="OP I">Operação I</button><button data-op="OP II">Operação II</button></div>
 <label for="poloFilter">POLO</label><select id="poloFilter" class="select"><option value="TODOS">TODOS OS POLOS</option></select>
@@ -215,6 +227,19 @@ footer{font-size:12px}
 <div id="states"></div>
 </section>
 <section id="view-diagnostico" hidden><div id="diagnosisContent"></div></section>
+<section id="view-evolucao" hidden>
+<div class="section-head"><h2>EVOLUÇÃO DIÁRIA DOS INDICADORES</h2><p>REGISTRE UM NOVO MARCO APÓS CADA ATUALIZAÇÃO DA BASE</p></div>
+<div class="history-panel">
+ <div class="history-controls">
+  <div><label for="historyDate">DATA DA ATUALIZAÇÃO</label><input id="historyDate" type="date"></div>
+  <button id="saveHistory" type="button">REGISTRAR EVOLUÇÃO</button>
+ </div>
+ <p class="history-help">Ao registrar, o painel salva os indicadores atuais das Operações I, II e do total. Se registrar novamente a mesma operação na mesma data, o registro daquele dia será atualizado.</p>
+ <div id="historyStatus" class="history-status" aria-live="polite">NENHUM REGISTRO NOVO REALIZADO NESTA SESSÃO.</div>
+ <div class="table-wrap"><table class="data-table history-table"><thead><tr><th>Data</th><th>Operação</th><th>Base</th><th>SIM</th><th>% SIM</th><th>Decidir depois</th><th>Não respondidos</th><th>Variação SIM</th></tr></thead><tbody id="historyBody"></tbody></table></div>
+ <div class="history-foot">HISTÓRICO SALVO NESTE NAVEGADOR. PARA MANTER A MESMA SÉRIE EM OUTRO DISPOSITIVO OU COMPARTILHAR COM A EQUIPE, SERÁ NECESSÁRIO EXPORTAR/TRANSPORTAR OS REGISTROS.</div>
+</div>
+</section>
 <section id="view-dados" hidden><div class="section-head"><h2>Consulta detalhada de polos</h2><p>Base, SIM, NÃO, decidir depois e não respondidos</p></div><div class="panel table-wrap"><table class="data-table"><thead><tr><th>Polo</th><th>Estado</th><th>Operação</th><th>Base</th><th>SIM</th><th>% SIM</th><th>NÃO</th><th>Decidir depois</th><th>Não respondido</th></tr></thead><tbody id="tbody"></tbody></table></div></section>
 <footer>Fonte: arquivo “DASH REMATRICULA BONIFICADA 27 - 1.xlsx”. Indicadores calculados a partir dos dados das abas OP I e OP II. Os percentuais representam SIM ÷ base total.</footer>
 </main>
@@ -483,6 +508,48 @@ function renderDiagnosis(){
  document.getElementById('diagnosisContent').innerHTML=html;
 }
 function renderTable(){document.getElementById('tbody').innerHTML=filtered().sort((a,b)=>a.nome.localeCompare(b.nome,'pt-BR')).map(x=>`<tr><td>${x.nome}<div class="hint">Cód. ${x.codigo}</div></td><td>${x.estado}</td><td>${x.operacao}</td><td>${fmt(x.base)}</td><td>${fmt(x.sim)}</td><td style="color:var(--yellow);font-weight:800">${pct(x.pct_sim)}</td><td>${fmt(x.nao)}</td><td>${fmt(x.decidir)}</td><td>${fmt(x.nao_resp)}</td></tr>`).join('');}
+
+const HISTORY_KEY='uniasselvi_rematricula_2027_1_daily_history_v1';
+function readHistory(){try{return JSON.parse(localStorage.getItem(HISTORY_KEY)||'[]')}catch(e){return []}}
+function writeHistory(rows){localStorage.setItem(HISTORY_KEY,JSON.stringify(rows))}
+function historyFmt(n){return Number(n||0).toLocaleString('pt-BR')}
+function historyPct(t){return t.base?(t.sim/t.base*100).toFixed(2).replace('.',',')+'%':'0,00%'}
+function historyTotals(op){
+ const rows=op==='GERAL'?DATA:DATA.filter(x=>x.operacao===op);
+ return totals(rows);
+}
+function renderHistory(){
+ const body=document.getElementById('historyBody');if(!body)return;
+ const rows=readHistory().sort((a,b)=>b.date.localeCompare(a.date)||a.op.localeCompare(b.op));
+ if(!rows.length){body.innerHTML='<tr><td colspan="8" class="empty">AINDA NÃO HÁ EVOLUÇÕES REGISTRADAS. SELECIONE A DATA E CLIQUE EM REGISTRAR EVOLUÇÃO.</td></tr>';return}
+ const ordered=[...rows].sort((a,b)=>a.date.localeCompare(b.date)||a.op.localeCompare(b.op));
+ const previous={};
+ const delta={};
+ ordered.forEach(x=>{const p=previous[x.op];delta[x.id]=p?x.sim-p.sim:null;previous[x.op]=x;});
+ body.innerHTML=rows.map(x=>{
+  const change=delta[x.id];
+  const changeText=change===null?'—':(change>0?'+':'')+historyFmt(change);
+  const cls=change===null?'':change>0?'positive':change<0?'negative':'';
+  return '<tr><td>'+x.date.split('-').reverse().join('/')+'</td><td>'+x.label+'</td><td>'+historyFmt(x.base)+'</td><td>'+historyFmt(x.sim)+'</td><td>'+historyPct(x)+'</td><td>'+historyFmt(x.decidir)+'</td><td>'+historyFmt(x.nao_resp)+'</td><td class="'+cls+'">'+changeText+'</td></tr>';
+ }).join('');
+}
+function recordDailyHistory(){
+ const dateInput=document.getElementById('historyDate');
+ const date=dateInput.value;
+ if(!date){document.getElementById('historyStatus').textContent='SELECIONE A DATA DA ATUALIZAÇÃO.';return}
+ const ops=[['GERAL','OPERAÇÕES PRÓPRIAS'],['OP I','OPERAÇÃO I'],['OP II','OPERAÇÃO II']];
+ let rows=readHistory(),added=0,updated=0;
+ ops.forEach(([op,label])=>{
+  const t=historyTotals(op);
+  const row={id:date+'_'+op,date,op,label,base:t.base,sim:t.sim,nao:t.nao,decidir:t.decidir,nao_resp:t.nao_resp};
+  const index=rows.findIndex(x=>x.id===row.id);
+  if(index>=0){rows[index]=row;updated++}else{rows.push(row);added++}
+ });
+ writeHistory(rows);
+ document.getElementById('historyStatus').textContent='EVOLUÇÃO REGISTRADA: '+date.split('-').reverse().join('/')+'. '+added+' NOVOS REGISTROS E '+updated+' ATUALIZADOS.';
+ renderHistory();
+}
+
 function render(){let a=filtered();renderKpis(a);renderRanks();renderStates();document.querySelectorAll('[data-projection]').forEach(updateProjectionPanel);renderTable();renderDiagnosis();}
 ops.addEventListener('click',e=>{let b=e.target.closest('button[data-op]');if(!b)return;operation=b.dataset.op;ops.querySelectorAll('button').forEach(x=>x.classList.toggle('active',x===b));refreshPoloFilter();render()});
 function handleProjectionDateChange(e){
@@ -522,6 +589,10 @@ document.getElementById('states').addEventListener('click',e=>{
 });
 
 poloFilter.addEventListener('change',e=>{selectedPolo=e.target.value;render()});search.addEventListener('input',e=>{query=e.target.value;render()});
-document.querySelectorAll('.tab').forEach(b=>b.addEventListener('click',()=>{document.querySelectorAll('.tab').forEach(x=>x.classList.toggle('active',x===b));['geral','diagnostico','dados'].forEach(v=>document.getElementById('view-'+v).hidden=v!==b.dataset.view)}));
+document.querySelectorAll('.tab').forEach(b=>b.addEventListener('click',()=>{document.querySelectorAll('.tab').forEach(x=>x.classList.toggle('active',x===b));['geral','diagnostico','evolucao','dados'].forEach(v=>document.getElementById('view-'+v).hidden=v!==b.dataset.view);if(b.dataset.view==='evolucao')renderHistory()}));
+const historyDateInput=document.getElementById('historyDate');
+if(historyDateInput)historyDateInput.value=new Date().toLocaleDateString('en-CA');
+document.getElementById('saveHistory').addEventListener('click',recordDailyHistory);
+renderHistory();
 render();
 </script></body></html>
