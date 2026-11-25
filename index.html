@@ -219,6 +219,12 @@ footer{font-size:12px}
 .daily-evolution-result{background:#f4f7fb;border-left:4px solid var(--yellow);border-radius:8px;padding:12px 14px;margin:10px 0 16px;line-height:1.8;color:var(--navy);font-size:13px}
 .horizontal-history{min-width:900px}.horizontal-history th:not(:first-child),.horizontal-history td:not(:first-child){text-align:center;white-space:nowrap}
 .horizontal-history th:first-child,.horizontal-history td:first-child{min-width:245px}
+.daily-title{font-size:15px;font-weight:900;color:var(--navy);margin-bottom:4px}
+.daily-subtitle{font-size:12px;color:var(--muted);margin-bottom:8px}
+.daily-compare{min-width:620px}
+.daily-compare th,.daily-compare td{text-align:center}
+.daily-compare th:first-child,.daily-compare td:first-child{text-align:left}
+
 
 </style></head><body>
 <header><div class="brand"><div class="logo">UNI</div><div><h1>Painel de Rematrícula Bonificada • 2027/1</h1><div class="sub">Acompanhamento das respostas por operação, estado e polo</div></div></div>
@@ -245,10 +251,10 @@ footer{font-size:12px}
  </div>
  <p class="history-help">Ao registrar, o painel salva os indicadores atuais das Operações I, II e do total. Se registrar novamente a mesma operação na mesma data, o registro daquele dia será atualizado.</p>
  <div id="historyStatus" class="history-status" aria-live="polite">NENHUM REGISTRO NOVO REALIZADO NESTA SESSÃO.</div>
- <div class="history-actions"><button id="dailyEvolution" type="button">CALCULAR EVOLUÇÃO DIÁRIA</button><span>COMPARA AS DUAS ÚLTIMAS DATAS REGISTRADAS</span></div>
+ <div class="history-actions"><button id="dailyEvolution" type="button">CALCULAR EVOLUÇÃO DIÁRIA</button><span>COMPARE AS DUAS ÚLTIMAS ATUALIZAÇÕES</span></div>
  <div id="dailyEvolutionResult" class="daily-evolution-result" aria-live="polite">REGISTRE PELO MENOS DUAS DATAS PARA CALCULAR QUANTAS PESSOAS RESPONDERAM ENTRE AS ATUALIZAÇÕES.</div>
  <div class="table-wrap"><table class="data-table history-table horizontal-history"><thead id="historyHead"></thead><tbody id="historyBody"></tbody></table></div>
- <div class="history-foot">A COLUNA “RENOVAÇÕES DESDE O ÚLTIMO REGISTRO” MOSTRA A DIFERENÇA DE SIM ENTRE DUAS ATUALIZAÇÕES CONSECUTIVAS. HISTÓRICO SALVO NESTE NAVEGADOR. PARA MANTER A MESMA SÉRIE EM OUTRO DISPOSITIVO OU COMPARTILHAR COM A EQUIPE, SERÁ NECESSÁRIO EXPORTAR/TRANSPORTAR OS REGISTROS.</div>
+ <div class="history-foot">O QUADRO SUPERIOR MOSTRA O TOTAL DE SIM EM CADA DATA. O RESUMO ABAIXO COMPARA AS DUAS ÚLTIMAS ATUALIZAÇÕES E MOSTRA NOVAS RESPOSTAS E NOVOS SIM. HISTÓRICO SALVO NESTE NAVEGADOR.</div>
 </div>
 </section>
 <section id="view-dados" hidden><div class="section-head"><h2>Consulta detalhada de polos</h2><p>Base, SIM, NÃO, decidir depois e não respondidos</p></div><div class="panel table-wrap"><table class="data-table"><thead><tr><th>Polo</th><th>Estado</th><th>Operação</th><th>Base</th><th>SIM</th><th>% SIM</th><th>NÃO</th><th>Decidir depois</th><th>Não respondido</th></tr></thead><tbody id="tbody"></tbody></table></div></section>
@@ -533,50 +539,25 @@ function renderHistory(){
  const body=document.getElementById('historyBody'),head=document.getElementById('historyHead');if(!body||!head)return;
  const rows=readHistory();
  const dates=[...new Set(rows.map(x=>x.date))].sort();
- if(!dates.length){head.innerHTML='';body.innerHTML='<tr><td class="empty">AINDA NÃO HÁ EVOLUÇÕES REGISTRADAS. SELECIONE A DATA E CLIQUE EM REGISTRAR EVOLUÇÃO.</td></tr>';return}
- head.innerHTML='<tr><th>OPERAÇÃO / INDICADOR</th>'+dates.map(d=>'<th>'+d.split('-').reverse().join('/')+'</th>').join('')+'</tr>';
+ if(!dates.length){head.innerHTML='<tr><th>OPERAÇÃO</th></tr>';body.innerHTML='<tr><td class="empty">AINDA NÃO HÁ EVOLUÇÕES REGISTRADAS. SELECIONE A DATA E CLIQUE EM REGISTRAR EVOLUÇÃO.</td></tr>';return}
+ head.innerHTML='<tr><th>OPERAÇÃO / TOTAL DE SIM</th>'+dates.map(d=>'<th>'+d.split('-').reverse().join('/')+'</th>').join('')+'</tr>';
  const ops=[['GERAL','OPERAÇÕES PRÓPRIAS'],['OP I','OPERAÇÃO I'],['OP II','OPERAÇÃO II']];
- const metrics=[['sim','RESPOSTAS SIM',true],['responses','TOTAL QUE RESPONDERAM',true],['pct','% SIM',false]];
  const get=(op,date)=>rows.find(x=>x.op===op&&x.date===date);
- const previousDate={};
- dates.forEach((date,i)=>{previousDate[date]=i?dates[i-1]:null});
- let html='';
- ops.forEach(([op,label])=>{
-  metrics.forEach(([metric,metricLabel,numeric])=>{
-   html+='<tr><td><strong>'+label+' — '+metricLabel+'</strong></td>';
-   dates.forEach(date=>{
-    const x=get(op,date);
-    if(!x){html+='<td>—</td>';return}
-    let val=metric==='sim'?x.sim:metric==='responses'?(x.sim+x.nao+x.decidir):historyPct(x);
-    if(metric==='responses'){
-      const prevDate=previousDate[date],p=prevDate?get(op,prevDate):null;
-      val=p?((x.sim+x.nao+x.decidir)-(p.sim+p.nao+p.decidir)):'—';
-      if(val!=='—'&&val>0)val='+'+historyFmt(val);else if(val!=='—')val=historyFmt(val);
-    } else if(numeric) val=historyFmt(val);
-    html+='<td>'+val+'</td>';
-   });
-   html+='</tr>';
-  });
- });
- body.innerHTML=html;
-}
-function calculateDailyEvolution(){
- const rows=readHistory(),dates=[...new Set(rows.map(x=>x.date))].sort();
+ body.innerHTML=ops.map(([op,label])=>'<tr><td><strong>'+label+'</strong></td>'+dates.map(date=>{const x=get(op,date);return '<td>'+(x?historyFmt(x.sim):'—')+'</td>'}).join('')+'</tr>').join('');
  const result=document.getElementById('dailyEvolutionResult');
- if(dates.length<2){result.textContent='AINDA NÃO É POSSÍVEL CALCULAR: REGISTRE UMA SEGUNDA DATA DE ATUALIZAÇÃO.';return}
- const prev=dates[dates.length-2],curr=dates[dates.length-1];
- const fmt=d=>d.split('-').reverse().join('/');
- const ops=[['GERAL','OPERAÇÕES PRÓPRIAS'],['OP I','OPERAÇÃO I'],['OP II','OPERAÇÃO II']];
+ if(dates.length<2){result.innerHTML='<strong>EVOLUÇÃO DIÁRIA</strong><br>Registre uma segunda data para comparar quantas respostas chegaram entre as atualizações.';return}
+ const prev=dates[dates.length-2],curr=dates[dates.length-1],fmt=d=>d.split('-').reverse().join('/');
  const lines=ops.map(([op,label])=>{
-  const p=rows.find(x=>x.op===op&&x.date===prev),c=rows.find(x=>x.op===op&&x.date===curr);
-  if(!p||!c)return '<strong>'+label+':</strong> sem registro nas duas datas';
-  const oldResponses=p.sim+p.nao+p.decidir,newResponses=c.sim+c.nao+c.decidir;
-  const answered=newResponses-oldResponses,sim=c.sim-p.sim;
-  return '<strong>'+label+':</strong> '+(answered>=0?'+':'')+historyFmt(answered)+' novas respostas | '+(sim>=0?'+':'')+historyFmt(sim)+' novos SIM';
+  const p=get(op,prev),c=get(op,curr);
+  if(!p||!c)return '<tr><td>'+label+'</td><td colspan="3">Faltam dados para comparar</td></tr>';
+  const previousAnswers=p.sim+p.nao+p.decidir,newAnswers=c.sim+c.nao+c.decidir;
+  const newResponses=newAnswers-previousAnswers,newYes=c.sim-p.sim;
+  const sign=n=>n>0?'+':'';
+  return '<tr><td><strong>'+label+'</strong></td><td>'+sign(newResponses)+historyFmt(newResponses)+'</td><td>'+sign(newYes)+historyFmt(newYes)+'</td><td>'+historyPct(c)+'</td></tr>';
  });
- result.innerHTML='<strong>EVOLUÇÃO DE '+fmt(prev)+' PARA '+fmt(curr)+'</strong><br>'+lines.join('<br>');
+ result.innerHTML='<div class="daily-title">DE '+fmt(prev)+' PARA '+fmt(curr)+'</div><div class="daily-subtitle">Quantas respostas chegaram desde a última atualização?</div><div class="table-wrap"><table class="data-table daily-compare"><thead><tr><th>OPERAÇÃO</th><th>NOVAS RESPOSTAS</th><th>NOVOS SIM</th><th>% SIM ATUAL</th></tr></thead><tbody>'+lines.join('')+'</tbody></table></div>';
 }
-function recordDailyHistory(){
+function calculateDailyEvolution(){renderHistory();}function recordDailyHistory(){
  const dateInput=document.getElementById('historyDate');
  const date=dateInput.value;
  if(!date){document.getElementById('historyStatus').textContent='SELECIONE A DATA DA ATUALIZAÇÃO.';return}
