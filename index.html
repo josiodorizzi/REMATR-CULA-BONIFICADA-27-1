@@ -206,6 +206,7 @@ footer{font-size:12px}
 .history-controls label{display:block;color:var(--muted);font-size:12px;font-weight:800;margin-bottom:6px}
 .history-controls input{padding:10px 12px;border:1px solid #cbd5e3;border-radius:8px;color:var(--text);font:inherit}
 .history-controls button{background:var(--yellow);border:0;border-radius:8px;padding:12px 16px;font-weight:900;color:#263650;cursor:pointer}
+.history-end-date{padding:8px 14px;border:1px solid #e4e8ef;border-radius:8px;background:#fff;min-height:42px;box-sizing:border-box}.history-end-date label{margin:0 0 3px}.history-end-date strong{font-size:15px;color:var(--navy)}
 .history-help,.history-foot{font-size:12px;color:var(--muted);line-height:1.5}
 .history-status{margin:10px 0 14px;padding:10px 12px;background:#fff9e8;border-left:4px solid var(--yellow);border-radius:7px;font-size:12px;font-weight:800;color:#34435c}
 .history-table{min-width:900px}
@@ -232,12 +233,13 @@ footer{font-size:12px}
 <div class="history-panel">
  <div class="history-controls">
   <div><label for="historyDate">DATA DA ATUALIZAÇÃO</label><input id="historyDate" type="date"></div>
+  <div class="history-end-date"><label>DATA FIM DA CAMPANHA</label><strong>08/01/2027</strong></div>
   <button id="saveHistory" type="button">REGISTRAR EVOLUÇÃO</button>
  </div>
  <p class="history-help">Ao registrar, o painel salva os indicadores atuais das Operações I, II e do total. Se registrar novamente a mesma operação na mesma data, o registro daquele dia será atualizado.</p>
  <div id="historyStatus" class="history-status" aria-live="polite">NENHUM REGISTRO NOVO REALIZADO NESTA SESSÃO.</div>
- <div class="table-wrap"><table class="data-table history-table"><thead><tr><th>Data</th><th>Operação</th><th>Base</th><th>SIM</th><th>% SIM</th><th>Decidir depois</th><th>Não respondidos</th><th>Variação SIM</th></tr></thead><tbody id="historyBody"></tbody></table></div>
- <div class="history-foot">HISTÓRICO SALVO NESTE NAVEGADOR. PARA MANTER A MESMA SÉRIE EM OUTRO DISPOSITIVO OU COMPARTILHAR COM A EQUIPE, SERÁ NECESSÁRIO EXPORTAR/TRANSPORTAR OS REGISTROS.</div>
+ <div class="table-wrap"><table class="data-table history-table"><thead><tr><th>Data</th><th>Operação</th><th>Base</th><th>SIM</th><th>% SIM</th><th>Decidir depois</th><th>Não respondidos</th><th>RENOVAÇÕES DESDE O ÚLTIMO REGISTRO</th></tr></thead><tbody id="historyBody"></tbody></table></div>
+ <div class="history-foot">A COLUNA “RENOVAÇÕES DESDE O ÚLTIMO REGISTRO” MOSTRA A DIFERENÇA DE SIM ENTRE DUAS ATUALIZAÇÕES CONSECUTIVAS. HISTÓRICO SALVO NESTE NAVEGADOR. PARA MANTER A MESMA SÉRIE EM OUTRO DISPOSITIVO OU COMPARTILHAR COM A EQUIPE, SERÁ NECESSÁRIO EXPORTAR/TRANSPORTAR OS REGISTROS.</div>
 </div>
 </section>
 <section id="view-dados" hidden><div class="section-head"><h2>Consulta detalhada de polos</h2><p>Base, SIM, NÃO, decidir depois e não respondidos</p></div><div class="panel table-wrap"><table class="data-table"><thead><tr><th>Polo</th><th>Estado</th><th>Operação</th><th>Base</th><th>SIM</th><th>% SIM</th><th>NÃO</th><th>Decidir depois</th><th>Não respondido</th></tr></thead><tbody id="tbody"></tbody></table></div></section>
